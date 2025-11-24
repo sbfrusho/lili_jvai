@@ -11,8 +11,12 @@ class TranslationController extends GetxController {
   final RxString searchQuery = ''.obs;
   final RxString translationResult = ''.obs;
 
-  // Recent translations
+  // Recent translations list
   final RxList<Map<String, String>> recentTranslations =
+      <Map<String, String>>[].obs;
+
+  // Search results (3 synonym boxes)
+  final RxList<Map<String, String>> searchResults =
       <Map<String, String>>[].obs;
 
   @override
@@ -27,19 +31,24 @@ class TranslationController extends GetxController {
     super.onClose();
   }
 
+  // Called whenever the search text changes
   void _onSearchChanged() {
     searchQuery.value = searchController.text;
+
     if (searchController.text.isNotEmpty) {
       _debounceSearch();
     } else {
       translationResult.value = '';
+      searchResults.clear();
     }
   }
 
+  // Prevents immediate search — waits for user to stop typing
   void _debounceSearch() {
     Future.delayed(const Duration(milliseconds: 500), () {
       if (searchController.text == searchQuery.value) {
-        translate();
+        performSearch(); // show synonym boxes
+        translate();     // translation
       }
     });
   }
@@ -50,75 +59,109 @@ class TranslationController extends GetxController {
     sourceLanguage.value = targetLanguage.value;
     targetLanguage.value = temp;
 
-    // Re-translate if text exists
     if (searchController.text.isNotEmpty) {
       translate();
+      performSearch();
     }
   }
 
-  /// Mock translation function
+  // ---------------------------------------------------------------------------
+  //  SYNONYM BOXES (Under Search Bar)
+  // ---------------------------------------------------------------------------
+  void performSearch() {
+    final query = searchController.text.trim();
+    if (query.isEmpty) return;
+
+    searchResults.clear();
+
+    // Mock synonyms (Replace with real API later)
+    searchResults.assignAll([
+      {"synonym": "$query meaning 1", "category": "General"},
+      {"synonym": "$query meaning 2", "category": "Usage"},
+      {"synonym": "$query meaning 3", "category": "Context"},
+    ]);
+  }
+
+  // ---------------------------------------------------------------------------
+  //  TRANSLATION LOGIC
+  // ---------------------------------------------------------------------------
   void translate() async {
-    if (searchController.text.trim().isEmpty) return;
+    final text = searchController.text.trim();
+    if (text.isEmpty) return;
 
     translationResult.value = 'Searching...';
-    try {
-      await Future.delayed(const Duration(seconds: 1));
-      translationResult.value = '${searchController.text}';
 
-      // Add to recent translations
-      _addToRecent(searchController.text, translationResult.value);
+    try {
+      await Future.delayed(const Duration(milliseconds: 800));
+
+      // Mock translation (returns same text)
+      translationResult.value = text;
+
+      // Save to recent list
+      _addToRecent(text, translationResult.value);
     } catch (e) {
       Get.snackbar(
         'Error',
         'Translation failed: $e',
+        snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
       );
     }
   }
 
-  /// Add translation to recent list
-  void _addToRecent(String original, String translated) {
-    final newTranslation = {
-      'english': sourceLanguage.value == 'English' ? original : translated,
-      'marshallese':
-          sourceLanguage.value == 'Marshallese' ? original : translated,
-      'category': 'General',
-    };
-    recentTranslations.insert(0, newTranslation);
+  // Save translation to recent list
+/// Add to recent translations (no duplicates)
+void _addToRecent(String original, String translated) {
+  // Create new translation map
+  final newTranslation = {
+    'english': sourceLanguage.value == 'English' ? original : translated,
+    'marshallese':
+        sourceLanguage.value == 'Marshallese' ? original : translated,
+    'category': 'General',
+  };
 
-    if (recentTranslations.length > 10) {
-      recentTranslations.removeLast();
-    }
+  // Remove existing entry if already in recent
+  recentTranslations.removeWhere((element) =>
+      element['english'] == newTranslation['english'] &&
+      element['marshallese'] == newTranslation['marshallese']);
+
+  // Insert new at top
+  recentTranslations.insert(0, newTranslation);
+
+  // Keep only latest 10
+  if (recentTranslations.length > 10) {
+    recentTranslations.removeLast();
   }
+}
 
-  /// Clear search input
+
+  // Clear input and results
   void clearSearch() {
     searchController.clear();
     translationResult.value = '';
+    searchResults.clear();
   }
 
-  /// Handle image upload
+  // Image upload (Future OCR integration)
   void uploadImage() async {
-    // TODO: implement actual image picker + OCR
     Get.snackbar(
       'Image Upload',
-      'Pick an image to translate',
+      'Select an image to translate',
+      snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.blue,
       colorText: Colors.white,
-      snackPosition: SnackPosition.BOTTOM,
     );
 
-    // Simulate processing
     await Future.delayed(const Duration(seconds: 2));
 
-    // Example: Mock extracted text from image
     searchController.text = 'Bone';
     translate();
+    performSearch();
   }
 
-  /// Open translation detail
+
+  // Show details of a translation
   void openTranslationDetail(Map<String, String> translation) {
     Get.snackbar(
       'Translation',
