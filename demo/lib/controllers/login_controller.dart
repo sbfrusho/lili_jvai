@@ -1,3 +1,4 @@
+import 'package:demo/views/screens/Home%20Screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -110,6 +111,7 @@ class LoginController extends GetxController {
       
       // Temporary: Remove this delay when implementing API
       await Future.delayed(const Duration(seconds: 1));
+      Get.to(HomeScreen());
       
       // TODO: After successful API call, navigate to home
       // Get.offAllNamed('/home');

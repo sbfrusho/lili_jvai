@@ -10,23 +10,55 @@ class HomeHeader extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Image.asset(
-          "assets/icons/1.png",
-          width: screenWidth * 0.15,
-          height: screenHeight * 0.05,
-        ),
-        GestureDetector(
-          onTap: () => Get.back(),
-          child: SvgPicture.asset(
-            "assets/icons/back_button.svg",
-            width: screenWidth * 0.06,
-            height: screenWidth * 0.06,
+    // Define icon size
+    final double iconSize = screenWidth * 0.09; // same for both icons
+
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: screenWidth * 0.05,
+        vertical: screenHeight * 0.02,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Logo / left image
+          Image.asset(
+            "assets/icons/1.png",
+            width: screenWidth * 0.15,
+            height: screenHeight * 0.05,
+            fit: BoxFit.contain,
           ),
-        ),
-      ],
+
+          // Right icons
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () => Get.back(),
+                child: SizedBox(
+                  width: iconSize,
+                  height: iconSize,
+                  child: SvgPicture.asset(
+                    "assets/icons/notification.svg",
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+              SizedBox(width: screenWidth * 0.03), // spacing between icons
+              GestureDetector(
+                onTap: () => Get.back(),
+                child: SizedBox(
+                  width: iconSize,
+                  height: iconSize,
+                  child: SvgPicture.asset(
+                    "assets/icons/profile.svg",
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
