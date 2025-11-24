@@ -92,7 +92,7 @@ class TranslationSection extends StatelessWidget {
                       ),
                       child: Icon(
                         isFav ? Icons.favorite : Icons.favorite_border,
-                        color: isFav ? Colors.red : Colors.white,
+                        color: isFav ? Colors.white : Colors.white,
                         size: 24,
                       ),
                     ),

@@ -2,6 +2,7 @@ import 'package:demo/views/screens/Home%20Screen/widgets/contex_section.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:demo/utils/common_page.dart';
+import 'package:demo/utils/custon_bottom_navbar.dart';
 import 'package:demo/controllers/translation_home_controller.dart';
 import 'widgets/home_header.dart';
 import 'widgets/search_section.dart';
@@ -21,39 +22,44 @@ class HomeScreen extends StatelessWidget {
     final verticalSpacing = screenHeight * 0.02;
 
     return CommonPage(
-      child: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-            horizontal: horizontalPadding, vertical: verticalSpacing),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            HomeHeader(),
-            SizedBox(height: verticalSpacing),
-            
-            SearchSection(),
-            SizedBox(height: verticalSpacing),
-            
-            TranslationSection(),
-            
-            // Context Section - appears below Translation when AI button is clicked
-            SizedBox(height: verticalSpacing),
-            ContextSection(),
-            
-            SizedBox(height: verticalSpacing),
-            
-            // Recent Translation Section - Conditionally shown
-            Obx(() {
-              if (!controller.showRecentSection.value) {
-                return const SizedBox.shrink();
-              }
-              
-              return SizedBox(
-                height: screenHeight * 0.35,
-                child: RecentTranslationWidget(),
-              );
-            }),
-          ],
-        ),
+      // floatingBottomNavigationBar: const CustomBottomNavBar(),
+      child: Stack(
+        children: [
+          // Main scrollable content
+          SingleChildScrollView(
+            padding: EdgeInsets.symmetric(
+                horizontal: horizontalPadding, vertical: verticalSpacing),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                HomeHeader(),
+                SizedBox(height: verticalSpacing),
+                SearchSection(),
+                SizedBox(height: verticalSpacing),
+                TranslationSection(),
+                SizedBox(height: verticalSpacing),
+                ContextSection(),
+                SizedBox(height: verticalSpacing),
+                Obx(() {
+                  if (!controller.showRecentSection.value) return const SizedBox.shrink();
+                  return SizedBox(
+                    height: screenHeight * 0.35,
+                    child: RecentTranslationWidget(),
+                  );
+                }),
+                SizedBox(height: screenHeight * 0.08), // extra bottom space so last item is visible above nav
+              ],
+            ),
+          ),
+
+          // Floating Bottom NavBar
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: const CustomBottomNavBar(),
+          ),
+        ],
       ),
     );
   }

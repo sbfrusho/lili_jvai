@@ -11,14 +11,14 @@ class CustomBottomNavBar extends StatelessWidget {
 
     return ClipRRect(
       borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(24),
-        topRight: Radius.circular(24),
+        topLeft: Radius.circular(16),
+        topRight: Radius.circular(16),
       ),
       child: Container(
-        height: 80,
+        width: double.infinity,
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [Color(0xFFFF9A56), Color(0xFFFF7A3D)],
+            colors: [Color.fromARGB(255, 245, 124, 43), Color.fromARGB(255, 247, 108, 44)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

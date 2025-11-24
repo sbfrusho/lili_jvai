@@ -357,7 +357,22 @@ class TranslationController extends GetxController {
       return;
     }
     
-    await Clipboard.setData(ClipboardData(text: translationResult.value));
+    // Format the copy text
+    final englishWord = sourceLanguage.value == 'English' 
+        ? searchController.text.trim() 
+        : translationResult.value;
+    final marshalleseWord = sourceLanguage.value == 'Marshallese' 
+        ? searchController.text.trim() 
+        : translationResult.value;
+    
+    String copyText = 'English - $englishWord\nMarshallese - $marshalleseWord';
+    
+    // Add context if available
+    if (contextResult.value.isNotEmpty && contextResult.value != 'Generating AI context...') {
+      copyText += '\nContext - ${contextResult.value}';
+    }
+    
+    await Clipboard.setData(ClipboardData(text: copyText));
     
     Get.snackbar(
       'Copied',

@@ -1,3 +1,5 @@
+import 'package:demo/views/screens/Home%20Screen/home_screen.dart';
+import 'package:demo/views/screens/profile/favourite_screen.dart';
 import 'package:get/get.dart';
 
 class BottomNavController extends GetxController {
@@ -11,10 +13,12 @@ class BottomNavController extends GetxController {
 
   // Navigate to specific tab
   void navigateToHome() {
+    Get.to(HomeScreen());
     selectedIndex.value = 0;
   }
 
   void navigateToFavorite() {
+    Get.to(FavoritesPage());
     selectedIndex.value = 1;
   }
 

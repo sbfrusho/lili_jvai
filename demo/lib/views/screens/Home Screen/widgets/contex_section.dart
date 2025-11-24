@@ -5,6 +5,7 @@ import 'package:demo/controllers/translation_home_controller.dart';
 class ContextSection extends StatelessWidget {
   final TranslationController controller = Get.find<TranslationController>();
 
+
   ContextSection({super.key});
 
   @override
@@ -76,29 +77,20 @@ class ContextSection extends StatelessWidget {
                           vertical: screenHeight * 0.008,
                         ),
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.purple.withOpacity(0.6),
-                              Colors.blue.withOpacity(0.6),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(20),
+                          
+                          borderRadius: BorderRadius.circular(6),
                           border: Border.all(
-                            color: Colors.white.withOpacity(0.3),
+                            color: Colors.white.withOpacity(0.2),
                             width: 1,
                           ),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(
-                              Icons.auto_awesome,
-                              color: Colors.white,
-                              size: 16,
-                            ),
-                            SizedBox(width: screenWidth * 0.015),
                             Text(
-                              'AI Generated',
+
+                              // translation = controller.recentTranslations[index];
+                              'General',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: getResponsiveFontSize(12),

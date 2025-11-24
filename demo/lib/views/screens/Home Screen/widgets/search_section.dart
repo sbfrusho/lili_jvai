@@ -186,13 +186,22 @@ class SearchSection extends StatelessWidget {
                                       ),
                                       // Search button inside input
                                       GestureDetector(
-                                        onTap: controller.triggerSearchIconAction,
+                                        onTap:
+                                            controller.triggerSearchIconAction,
                                         child: Container(
-                                          margin: EdgeInsets.only(right: screenWidth * 0.02),
-                                          padding: EdgeInsets.all(screenWidth * 0.02),
+                                          margin: EdgeInsets.only(
+                                            right: screenWidth * 0.02,
+                                          ),
+                                          padding: EdgeInsets.all(
+                                            screenWidth * 0.02,
+                                          ),
                                           decoration: BoxDecoration(
-                                            color: Colors.white.withOpacity(0.2),
-                                            borderRadius: BorderRadius.circular(8),
+                                            color: Colors.white.withOpacity(
+                                              0.2,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
                                           ),
                                           child: Icon(
                                             Icons.search,
@@ -229,11 +238,7 @@ class SearchSection extends StatelessWidget {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
-                        child: Icon(
-                          Icons.auto_awesome,
-                          color: Colors.white,
-                          size: screenWidth * 0.06,
-                        ),
+                        child: SvgPicture.asset("assets/icons/ai_search.svg"),
                       ),
                     ),
                   ),
@@ -246,75 +251,73 @@ class SearchSection extends StatelessWidget {
         SizedBox(height: screenHeight * 0.02),
 
         // --- Suggestion Boxes (3 clickable boxes) ---
-        Obx(
-          () {
-            if (controller.searchResults.isEmpty) {
-              return const SizedBox.shrink();
-            }
+        Obx(() {
+          if (controller.searchResults.isEmpty) {
+            return const SizedBox.shrink();
+          }
 
-            return Column(
-              children: controller.searchResults
-                  .map(
-                    (result) => Padding(
-                      padding: EdgeInsets.only(bottom: screenHeight * 0.01),
-                      child: GestureDetector(
-                        onTap: () => controller.selectSuggestion(result),
-                        child: Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.04,
-                            vertical: screenHeight * 0.018,
+          return Column(
+            children: controller.searchResults
+                .map(
+                  (result) => Padding(
+                    padding: EdgeInsets.only(bottom: screenHeight * 0.01),
+                    child: GestureDetector(
+                      onTap: () => controller.selectSuggestion(result),
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.04,
+                          vertical: screenHeight * 0.018,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.2),
+                            width: 1,
                           ),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: Colors.white.withOpacity(0.2),
-                              width: 1,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                result['synonym'] ?? '',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: suggestionFontSize,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  result['synonym'] ?? '',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: suggestionFontSize,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: screenWidth * 0.025,
+                                vertical: screenHeight * 0.006,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                result['category'] ?? '',
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.9),
+                                  fontSize: suggestionFontSize * 0.85,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.025,
-                                  vertical: screenHeight * 0.006,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  result['category'] ?? '',
-                                  style: TextStyle(
-                                    color: Colors.white.withOpacity(0.9),
-                                    fontSize: suggestionFontSize * 0.85,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  )
-                  .toList(),
-            );
-          },
-        ),
+                  ),
+                )
+                .toList(),
+          );
+        }),
       ],
     );
   }
