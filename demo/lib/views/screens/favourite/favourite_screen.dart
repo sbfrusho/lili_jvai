@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:demo/controllers/translation_home_controller.dart';
+import 'package:demo/controllers/lilli_controllers/translation_home_controller.dart';
 
 class FavoritesPage extends StatelessWidget {
   final TranslationController controller = Get.find<TranslationController>();

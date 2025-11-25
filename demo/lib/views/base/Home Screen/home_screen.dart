@@ -1,9 +1,9 @@
-import 'package:demo/views/screens/Home%20Screen/widgets/contex_section.dart';
+import 'package:demo/views/base/Home%20Screen/widgets/contex_section.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:demo/utils/common_page.dart';
-import 'package:demo/utils/custon_bottom_navbar.dart';
-import 'package:demo/controllers/translation_home_controller.dart';
+import 'package:demo/utils/lilli_utils/common_page.dart';
+import 'package:demo/utils/lilli_utils/custon_bottom_navbar.dart';
+import 'package:demo/controllers/lilli_controllers/translation_home_controller.dart';
 import 'widgets/home_header.dart';
 import 'widgets/search_section.dart';
 import 'widgets/translation_section.dart';

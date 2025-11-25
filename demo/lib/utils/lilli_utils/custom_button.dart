@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomButton extends StatelessWidget {
   final String title;
@@ -34,7 +34,6 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // 🟢 If height is given → remove vertical padding completely
     final EdgeInsetsGeometry finalPadding =
         height != null ? const EdgeInsets.symmetric(horizontal: 16) : (padding ?? const EdgeInsets.all(16));
@@ -54,13 +53,16 @@ class CustomButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: width,
-        height: height,               // fixed height works now
-        padding: finalPadding,        // 🔥 NO vertical padding
+        height: height,               
+        padding: finalPadding,        
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(borderRadius),
+          border: Border.all(
+            color: Colors.white, // white border
+            width: 0.5,          // 0.5px width
+          ),
         ),
-
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,  

@@ -1,12 +1,12 @@
-import 'package:demo/utils/custom_text_field.dart';
+import 'package:demo/utils/lilli_utils/custom_text_field.dart';
 import 'package:demo/views/screens/Authentication/forgot_password.dart';
 import 'package:demo/views/screens/Authentication/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:demo/utils/common_page.dart';
-import 'package:demo/utils/custom_button.dart';
+import 'package:demo/utils/lilli_utils/common_page.dart';
+import 'package:demo/utils/lilli_utils/custom_button.dart';
 import 'package:get/get.dart';
-import 'package:demo/controllers/login_controller.dart'; // Import your controller
+import 'package:demo/controllers/lilli_controllers/login_controller.dart'; // Import your controller
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

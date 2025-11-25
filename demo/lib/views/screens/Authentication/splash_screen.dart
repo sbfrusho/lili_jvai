@@ -2,8 +2,8 @@
 //Rusho
 //----------------------------------------------
 
-import 'package:demo/utils/common_page.dart';
-import 'package:demo/utils/custom_button.dart';
+import 'package:demo/utils/lilli_utils/common_page.dart';
+import 'package:demo/utils/lilli_utils/custom_button.dart';
 import 'package:demo/views/screens/Authentication/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import '../controllers/auth_controller.dart';
+import '../controllers/lilli_controllers/auth_controller.dart';
 import '../utils/custom_snackbar.dart';
 import 'shared_prefs_service.dart';
 

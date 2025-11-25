@@ -1,9 +1,9 @@
-import 'package:demo/controllers/new_password_controller.dart';
-import 'package:demo/utils/custom_text_field.dart';
+import 'package:demo/controllers/lilli_controllers/new_password_controller.dart';
+import 'package:demo/utils/lilli_utils/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:demo/utils/common_page.dart';
-import 'package:demo/utils/custom_button.dart';
+import 'package:demo/utils/lilli_utils/common_page.dart';
+import 'package:demo/utils/lilli_utils/custom_button.dart';
 import 'package:get/get.dart';
 
 class NewPasswordScreen extends StatelessWidget {

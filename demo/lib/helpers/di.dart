@@ -1,7 +1,7 @@
 
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../controllers/auth_controller.dart';
+import '../controllers/lilli_controllers/auth_controller.dart';
 import '../controllers/theme_controller.dart';
 import '../controllers/user_controller.dart';
 

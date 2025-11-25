@@ -2,9 +2,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../services/api_service.dart';
-import '../services/shared_prefs_service.dart';
-import 'user_controller.dart';
+import '../../services/api_service.dart';
+import '../../services/shared_prefs_service.dart';
+import '../user_controller.dart';
 
 class AuthController extends GetxController {
   RxBool isLoggedIn = false.obs;

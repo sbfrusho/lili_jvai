@@ -1,10 +1,10 @@
-import 'package:demo/controllers/otp_verification_controller.dart';
+import 'package:demo/controllers/lilli_controllers/otp_verification_controller.dart';
 import 'package:demo/views/screens/Authentication/new_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:demo/utils/common_page.dart';
-import 'package:demo/utils/custom_button.dart';
+import 'package:demo/utils/lilli_utils/common_page.dart';
+import 'package:demo/utils/lilli_utils/custom_button.dart';
 import 'package:get/get.dart';
 
 class OtpVerificationScreen extends StatelessWidget {

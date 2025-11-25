@@ -12,7 +12,7 @@ class CustomTextField extends StatefulWidget {
   final double? height;
   final int? radius;
   final VoidCallback? onTap;
-  final ValueChanged<String>? onChanged; // ✅ added
+  final ValueChanged<String>? onChanged;
 
   const CustomTextField({
     super.key,
@@ -26,7 +26,7 @@ class CustomTextField extends StatefulWidget {
     this.height,
     this.radius,
     this.onTap,
-    this.onChanged, // ✅ include in constructor
+    this.onChanged,
   });
 
   @override
@@ -44,11 +44,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    OutlineInputBorder border(Color color) => OutlineInputBorder(
-          borderRadius: BorderRadius.circular(widget.radius?.toDouble() ?? 12),
-          borderSide: BorderSide(width: 1.0, color: color),
-        );
-
     Widget? buildPrefix() {
       if (widget.prefixIcon != null) {
         return Container(
@@ -78,13 +73,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
       return null;
     }
 
-    return SizedBox(
+    return Container(
       width: widget.width,
       height: widget.height,
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.2), // WHITE 20% opacity
+        borderRadius: BorderRadius.circular(widget.radius?.toDouble() ?? 12),
+      ),
       child: TextField(
         controller: widget.controller,
         onTap: widget.onTap,
-        onChanged: widget.onChanged, // ✅ pass onChanged here
+        onChanged: widget.onChanged,
         obscureText: widget.isPassword ? _obscureText : false,
         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
         cursorColor: Colors.white,
@@ -111,10 +110,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   },
                 )
               : null,
-          filled: true,
-          fillColor: Colors.transparent,
-          enabledBorder: border(Colors.white),
-          focusedBorder: border(Colors.blue),
+          border: InputBorder.none, // ✅ removes all borders
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(
             vertical: 16,
             horizontal: 12,

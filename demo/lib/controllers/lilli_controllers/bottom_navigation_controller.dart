@@ -1,5 +1,5 @@
-import 'package:demo/views/screens/Home%20Screen/home_screen.dart';
-import 'package:demo/views/screens/profile/favourite_screen.dart';
+import 'package:demo/views/base/Home%20Screen/home_screen.dart';
+import 'package:demo/views/screens/favourite/favourite_screen.dart';
 import 'package:get/get.dart';
 
 class BottomNavController extends GetxController {
