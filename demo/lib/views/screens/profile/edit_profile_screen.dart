@@ -45,7 +45,7 @@ class EditProfileScreen extends StatelessWidget {
                   ),
 
                   /// UPLOAD ICON
-                  Positioned(
+                  Positioned( 
                     bottom: 5,
                     right: 5,
                     child: GestureDetector(

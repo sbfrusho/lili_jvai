@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:demo/controllers/lilli_controllers/translation_home_controller.dart';
 
 class FavoritesPage extends StatelessWidget {
-  final TranslationController controller = Get.find<TranslationController>();
+  final TranslationController controller = Get.put(TranslationController());
 
   FavoritesPage({super.key});
 

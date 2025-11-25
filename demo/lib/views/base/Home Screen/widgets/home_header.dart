@@ -1,3 +1,5 @@
+import 'package:demo/views/screens/Notification/notification_screen.dart';
+import 'package:demo/views/screens/profile/profile_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -33,7 +35,7 @@ class HomeHeader extends StatelessWidget {
           Row(
             children: [
               GestureDetector(
-                onTap: () => Get.back(),
+                onTap: () => Get.to(NotificationScreen()),
                 child: SizedBox(
                   width: iconSize,
                   height: iconSize,
@@ -45,7 +47,7 @@ class HomeHeader extends StatelessWidget {
               ),
               SizedBox(width: screenWidth * 0.03), // spacing between icons
               GestureDetector(
-                onTap: () => Get.back(),
+                onTap: () => Get.to(ProfileSettingsScreen()),
                 child: SizedBox(
                   width: iconSize,
                   height: iconSize,

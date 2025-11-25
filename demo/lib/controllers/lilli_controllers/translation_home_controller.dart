@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-class TranslationController extends GetxController {
+class  TranslationController extends GetxController {
   // Text controller for search input
   final searchController = TextEditingController();
 

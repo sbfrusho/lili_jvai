@@ -24,19 +24,22 @@ class CommonPage extends StatelessWidget {
       child: Scaffold(
         appBar: showAppBar
             ? AppBar(
+                leadingWidth: 40, // Reduce space between back button and title
+                titleSpacing: 0, // Reduce extra spacing before title
                 title: Text(
                   text,
                   style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,                      
                     color: Colors.white,
                   ),
                 ),
                 backgroundColor: topColor,
                 elevation: 0,
-                iconTheme: const IconThemeData(color: Colors.white), // ✅ back button color white
+                iconTheme: const IconThemeData(color: Colors.white),
               )
             : null,
+
         body: Stack(
           children: [
             // Main content
@@ -52,7 +55,7 @@ class CommonPage extends StatelessWidget {
               ),
               child: SafeArea(child: child),
             ),
-      
+
             // Floating Bottom Navigation Bar
             if (floatingBottomNavigationBar != null)
               Positioned(

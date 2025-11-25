@@ -1,5 +1,7 @@
 import 'package:demo/views/base/Home%20Screen/home_screen.dart';
 import 'package:demo/views/screens/Authentication/splash_screen.dart';
+import 'package:demo/views/screens/Notification/notification_screen.dart';
+import 'package:demo/views/screens/favourite/favourite_screen.dart';
 import 'package:demo/views/screens/profile/about_us_screen.dart';
 import 'package:demo/views/screens/profile/change_password_screen.dart';
 import 'package:demo/views/screens/profile/profile_settings.dart';
@@ -12,7 +14,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key});   
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
