@@ -1,3 +1,4 @@
+import 'package:demo/models/lilli_models/favorites_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -24,8 +25,7 @@ class  TranslationController extends GetxController {
       <Map<String, String>>[].obs;
 
   // Favorite translations
-  final RxList<Map<String, String>> favoriteTranslations =
-      <Map<String, String>>[].obs;
+final RxList<FavoriteModel> favoriteTranslations = <FavoriteModel>[].obs;
 
   // Search results (3 synonym boxes)
   final RxList<Map<String, String>> searchResults =
@@ -384,37 +384,25 @@ class  TranslationController extends GetxController {
     );
   }
 
-  // ---------------- FAVORITES FUNCTIONS ----------------
+  // Favorite translations
+  
 
-  void addToFavorites(Map<String, String> translation) {
+  // ---------------- FAVORITES FUNCTIONS ----------------
+  void addToFavorites(FavoriteModel translation) {
     if (!isFavorite(translation)) {
       favoriteTranslations.insert(0, translation);
-      Get.snackbar(
-        'Added',
-        'Translation added to favorites',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 2),
-      );
+      print("Added to favorites: ${translation.english} -> ${translation.marshallese}");
     }
   }
 
-  void removeFromFavorites(Map<String, String> translation) {
+  void removeFromFavorites(FavoriteModel translation) {
     favoriteTranslations.removeWhere((element) =>
-        element['english'] == translation['english'] &&
-        element['marshallese'] == translation['marshallese']);
-    Get.snackbar(
-      'Removed',
-      'Translation removed from favorites',
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.orange,
-      colorText: Colors.white,
-      duration: const Duration(seconds: 2),
-    );
+        element.english == translation.english &&
+        element.marshallese == translation.marshallese);
+    print("Removed from favorites: ${translation.english} -> ${translation.marshallese}");
   }
 
-  void toggleFavorite(Map<String, String> translation) {
+  void toggleFavorite(FavoriteModel translation) {
     if (isFavorite(translation)) {
       removeFromFavorites(translation);
     } else {
@@ -422,9 +410,9 @@ class  TranslationController extends GetxController {
     }
   }
 
-  bool isFavorite(Map<String, String> translation) {
+  bool isFavorite(FavoriteModel translation) {
     return favoriteTranslations.any((element) =>
-        element['english'] == translation['english'] &&
-        element['marshallese'] == translation['marshallese']);
+        element.english == translation.english &&
+        element.marshallese == translation.marshallese);
   }
 }

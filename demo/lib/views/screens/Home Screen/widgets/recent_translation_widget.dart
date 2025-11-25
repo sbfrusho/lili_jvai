@@ -274,3 +274,9 @@ class RecentTranslationWidget extends StatelessWidget {
     );
   }
 }
+
+/*
+  English Marshallese       
+                              |General   delete_button
+  Hello    yokew
+ */

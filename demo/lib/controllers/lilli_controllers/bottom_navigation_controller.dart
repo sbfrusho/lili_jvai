@@ -1,4 +1,4 @@
-import 'package:demo/views/base/Home%20Screen/home_screen.dart';
+import 'package:demo/views/screens/Home%20Screen/home_screen.dart';
 import 'package:demo/views/screens/favourite/favourite_screen.dart';
 import 'package:get/get.dart';
 
@@ -18,7 +18,7 @@ class BottomNavController extends GetxController {
   }
 
   void navigateToFavorite() {
-    Get.to(FavoritesPage());
+    Get.to(FavoritesScreen());
     selectedIndex.value = 1;
   }
 
@@ -29,4 +29,28 @@ class BottomNavController extends GetxController {
   void navigateToAI() {
     selectedIndex.value = 3;
   }
+
+  void navigateToSubmissionScreen() {
+  // Get.to(SubmissionScreen());
+  selectedIndex.value = 2;
 }
+
+void navigateToAIScreen() {
+  // Get.to(AIScreen());
+  selectedIndex.value = 3;
+}
+
+}
+
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+
+// class BottomNavController extends GetxController {
+//   // Observable variable for selected index
+//   final RxInt selectedIndex = 0.obs;
+
+//   // Change selected tab
+//   void changeTab(int index) {
+//     selectedIndex.value = index;
+//   }
+// }

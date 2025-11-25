@@ -1,15 +1,11 @@
-import 'package:demo/views/base/Home%20Screen/home_screen.dart';
-import 'package:demo/views/screens/Authentication/splash_screen.dart';
-import 'package:demo/views/screens/Notification/notification_screen.dart';
-import 'package:demo/views/screens/favourite/favourite_screen.dart';
-import 'package:demo/views/screens/profile/about_us_screen.dart';
-import 'package:demo/views/screens/profile/change_password_screen.dart';
-import 'package:demo/views/screens/profile/profile_settings.dart';
+import 'package:demo/controllers/lilli_controllers/bottom_navigation_controller.dart';
+import 'package:demo/views/screens/Home%20Screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  Get.put(BottomNavController());
   runApp(const MyApp());
 }
 
@@ -21,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: ProfileSettingsScreen()
+      home: HomeScreen()
     );
   }
 }
