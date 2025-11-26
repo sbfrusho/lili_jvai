@@ -77,21 +77,22 @@ class _CustomTextFieldState extends State<CustomTextField> {
       width: widget.width,
       height: widget.height,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2), // WHITE 20% opacity
+        color: Colors.white.withOpacity(0.08), // WHITE 20% opacity
         borderRadius: BorderRadius.circular(widget.radius?.toDouble() ?? 12),
+        border: Border.all(color: Colors.white, width: 0.5), // ✅ white border
       ),
       child: TextField(
         controller: widget.controller,
         onTap: widget.onTap,
         onChanged: widget.onChanged,
         obscureText: widget.isPassword ? _obscureText : false,
-        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
+        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 14),
         cursorColor: Colors.white,
         decoration: InputDecoration(
           labelText: widget.label,
           hintText: widget.hint,
-          labelStyle: const TextStyle(color: Colors.white70),
-          hintStyle: const TextStyle(color: Colors.white54),
+          labelStyle: const TextStyle(color: Colors.white),
+          hintStyle: const TextStyle(color: Colors.white),
           prefixIcon: buildPrefix(),
           prefixIconConstraints: const BoxConstraints(
             minWidth: 48,
@@ -110,7 +111,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   },
                 )
               : null,
-          border: InputBorder.none, // ✅ removes all borders
+          border: InputBorder.none, // removes inner borders
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(
