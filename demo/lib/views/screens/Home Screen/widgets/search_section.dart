@@ -12,6 +12,7 @@ class SearchSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    bool pressed = false;
 
     // Responsive font sizes
     double getResponsiveFontSize(double baseSize) {
@@ -223,6 +224,7 @@ class SearchSection extends StatelessWidget {
                   // AI Search Icon Button (Outside)
                   GestureDetector(
                     onTap: () {
+                      pressed = true;
                       controller.triggerAISearch();
                     },
                     child: Container(

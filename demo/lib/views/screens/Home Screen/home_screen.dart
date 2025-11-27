@@ -13,6 +13,7 @@ import 'widgets/recent_translation_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
+  final bool pressed = false;
 
   // Find the already initialized controller
   final BottomNavController bottomController = Get.find<BottomNavController>();
@@ -57,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                     child: RecentTranslationWidget(),
                   );
                 }),
-                SizedBox(height: screenHeight * 0.08), // extra bottom space
+                SizedBox(height: screenHeight * 0.08),
               ],
             ),
           ),
