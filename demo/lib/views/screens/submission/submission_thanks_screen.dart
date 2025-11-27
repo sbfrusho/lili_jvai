@@ -1,3 +1,4 @@
+import 'package:demo/views/screens/Home%20Screen/home_screen.dart';
 import 'package:demo/views/screens/submission/submission_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,13 +21,13 @@ class SubmissionThanksScreen extends StatelessWidget {
     double radius(double r) => r * (screenWidth / 375);
 
     return CommonPage(
-      showAppBar: true,
+      // showAppBar: true,
       text: "Add New",
       child: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: screenWidth * 0.05,
-            vertical: screenHeight * 0.02,
+            vertical: screenHeight * 0.15,
           ),
           child: SingleChildScrollView(
             child: Column(
@@ -51,7 +52,7 @@ class SubmissionThanksScreen extends StatelessWidget {
                     backgroundColor: Colors.white.withOpacity(0.2),
                     borderRadius: radius(20),
                     onTap: () {
-                      Get.back();
+                      Get.to(()=>HomeScreen(),transition: .noTransition, duration: Duration(seconds: 0));
                     },
                   ),
                 ),
@@ -61,7 +62,7 @@ class SubmissionThanksScreen extends StatelessWidget {
                 // --- See All Submissions Text Button ---
                 TextButton(
                   onPressed: () {
-                    Get.to(()=>SubmissionListScreen());
+                    Get.to(()=>SubmissionListScreen(),transition: .noTransition, duration: Duration(seconds: 0));
                   },
                   child: Text(
                     "See all my submissions",

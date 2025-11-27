@@ -165,9 +165,9 @@ class OtpVerificationScreen extends StatelessWidget {
                     child: const Text(
                       "Didn't receive code? Resend",
                       style: TextStyle(
-                        color: Color(0xFFFFCB59),
+                        color: Color(0xFFFFffff),
                         fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ),
@@ -204,14 +204,14 @@ class OtpVerificationScreen extends StatelessWidget {
                     ? () async {
                         final success = await controller.verifyOtp();
                         if (success) {
-                          Get.to(() => const NewPasswordScreen());
+                          Get.to(() => const NewPasswordScreen(), transition: .noTransition, duration: Duration(seconds: 0));
                         }
                       }
                     : null,
                 width: screenWidth,
                 backgroundColor: controller.isButtonEnabled.value
-                    ? const Color(0xFFFFCB59)
-                    : Colors.white24,
+                    ? const Color(0xFFFFffff).withOpacity(.2)
+                    : Colors.white.withOpacity(0.2),
               );
             }),
 

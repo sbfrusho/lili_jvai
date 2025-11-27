@@ -13,6 +13,8 @@ class CustomTextField extends StatefulWidget {
   final int? radius;
   final VoidCallback? onTap;
   final ValueChanged<String>? onChanged;
+  final int? maxLines;
+  final TextAlignVertical? textAlignVertical;
 
   const CustomTextField({
     super.key,
@@ -27,6 +29,8 @@ class CustomTextField extends StatefulWidget {
     this.radius,
     this.onTap,
     this.onChanged,
+    this.maxLines = 1,
+    this.textAlignVertical,
   });
 
   @override
@@ -76,23 +80,31 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Container(
       width: widget.width,
       height: widget.height,
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.08), // WHITE 20% opacity
+      decoration: BoxDecoration( 
+        color: Colors.white.withOpacity(0.2),
         borderRadius: BorderRadius.circular(widget.radius?.toDouble() ?? 12),
-        border: Border.all(color: Colors.white, width: 0.5), // ✅ white border
+        border: Border.all(color: Colors.white.withOpacity(0.5), width: 0.5),
       ),
       child: TextField(
         controller: widget.controller,
         onTap: widget.onTap,
         onChanged: widget.onChanged,
         obscureText: widget.isPassword ? _obscureText : false,
-        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 14),
+        maxLines: widget.maxLines,
+        textAlignVertical: widget.textAlignVertical ?? TextAlignVertical.center,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w400,
+          fontSize: 15,
+        ),
         cursorColor: Colors.white,
         decoration: InputDecoration(
-          labelText: widget.label,
-          hintText: widget.hint,
-          labelStyle: const TextStyle(color: Colors.white),
-          hintStyle: const TextStyle(color: Colors.white),
+          hintText: widget.label,
+          floatingLabelBehavior: FloatingLabelBehavior.never,
+          hintStyle: TextStyle(
+            color: Colors.white.withOpacity(0.6),
+            fontSize: 15,
+          ),
           prefixIcon: buildPrefix(),
           prefixIconConstraints: const BoxConstraints(
             minWidth: 48,
@@ -111,12 +123,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   },
                 )
               : null,
-          border: InputBorder.none, // removes inner borders
+          border: InputBorder.none,
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: 16,
-            horizontal: 12,
+          contentPadding: EdgeInsets.symmetric(
+            vertical: widget.maxLines != null && widget.maxLines! > 1 ? 14 : 16,
+            horizontal: 16,
           ),
         ),
       ),

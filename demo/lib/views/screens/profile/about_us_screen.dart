@@ -8,6 +8,7 @@ class AboutUsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return CommonPage(
       text: "About Us",
+      showBackButton: true,
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         child: Column(

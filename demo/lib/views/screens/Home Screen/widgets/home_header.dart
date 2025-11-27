@@ -35,7 +35,7 @@ class HomeHeader extends StatelessWidget {
           Row(
             children: [
               GestureDetector(
-                onTap: () => Get.to(NotificationScreen()),
+                onTap: () => Get.to(NotificationScreen(),transition: .noTransition, duration: Duration(seconds: 0)),
                 child: SizedBox(
                   width: iconSize,
                   height: iconSize,
@@ -47,7 +47,7 @@ class HomeHeader extends StatelessWidget {
               ),
               SizedBox(width: screenWidth * 0.03), // spacing between icons
               GestureDetector(
-                onTap: () => Get.to(ProfileSettingsScreen()),
+                onTap: () => Get.to(ProfileSettingsScreen(),transition: .noTransition, duration: Duration(seconds: 0)),
                 child: SizedBox(
                   width: iconSize,
                   height: iconSize,

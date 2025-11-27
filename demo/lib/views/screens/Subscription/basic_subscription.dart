@@ -17,6 +17,7 @@ class BasicSubscription extends StatelessWidget {
     Get.put(SubscriptionController());
     
     return CommonPage(
+      showBackButton: true,
       text: "Manage Subscription",
       child: LayoutBuilder(
         builder: (context, constraints) {

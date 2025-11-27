@@ -1,5 +1,7 @@
+import 'package:demo/views/screens/AI%20Screen/ai_list_screen.dart';
 import 'package:demo/views/screens/Home%20Screen/home_screen.dart';
 import 'package:demo/views/screens/favourite/favourite_screen.dart';
+import 'package:demo/views/screens/submission/submission_list_screen.dart';
 import 'package:get/get.dart';
 
 class BottomNavController extends GetxController {
@@ -11,46 +13,52 @@ class BottomNavController extends GetxController {
     selectedIndex.value = index;
   }
 
-  // Navigate to specific tab
+  // Navigate to Home screen
   void navigateToHome() {
-    Get.to(HomeScreen());
     selectedIndex.value = 0;
+    Get.to(
+      () => HomeScreen(),
+      transition: Transition.noTransition,
+      duration: const Duration(seconds: 0),
+    );
   }
 
+  // Navigate to Favorite screen
   void navigateToFavorite() {
-    Get.to(FavoritesScreen());
     selectedIndex.value = 1;
+    Get.to(
+      () => FavoritesScreen(),
+      transition: Transition.noTransition,
+      duration: const Duration(seconds: 0),
+    );
   }
 
-  void navigateToSubmission() {
+  // Navigate to Submission screen
+  void navigateToSubmissionScreen() {
     selectedIndex.value = 2;
+    Get.to(
+      () => SubmissionListScreen(),
+      transition: Transition.noTransition,
+      duration: const Duration(seconds: 0),
+    );
+  }
+
+  // Navigate to AI screen
+  void navigateToAIScreen() {
+    selectedIndex.value = 3;
+    Get.to(
+      () => AiListScreen(),
+      transition: Transition.noTransition,
+      duration: const Duration(seconds: 0),
+    );
+  }
+
+  // Legacy methods (kept for backward compatibility)
+  void navigateToSubmission() {
+    navigateToSubmissionScreen();
   }
 
   void navigateToAI() {
-    selectedIndex.value = 3;
+    navigateToAIScreen();
   }
-
-  void navigateToSubmissionScreen() {
-  // Get.to(SubmissionScreen());
-  selectedIndex.value = 2;
 }
-
-void navigateToAIScreen() {
-  // Get.to(AIScreen());
-  selectedIndex.value = 3;
-}
-
-}
-
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-
-// class BottomNavController extends GetxController {
-//   // Observable variable for selected index
-//   final RxInt selectedIndex = 0.obs;
-
-//   // Change selected tab
-//   void changeTab(int index) {
-//     selectedIndex.value = index;
-//   }
-// }

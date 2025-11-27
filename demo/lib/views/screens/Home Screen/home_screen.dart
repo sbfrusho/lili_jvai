@@ -1,3 +1,4 @@
+
 import 'package:demo/controllers/lilli_controllers/bottom_navigation_controller.dart';
 import 'package:demo/views/screens/Home%20Screen/widgets/contex_section.dart';
 import 'package:flutter/material.dart';
@@ -19,14 +20,14 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Update the selected index when this screen is displayed
+    bottomController.selectedIndex.value = 0;
+
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
     final horizontalPadding = screenWidth * 0.05;
-    final verticalSpacing = screenHeight * 0.02;
-
-    // Update the selected index when this screen is displayed
-    bottomController.selectedIndex.value = 0;
+    final verticalSpacing = screenHeight * 0.01;
 
     return CommonPage(
       child: Stack(
@@ -41,7 +42,7 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 HomeHeader(),
-                SizedBox(height: verticalSpacing),
+                // SizedBox(height: verticalSpacing),
                 SearchSection(),
                 SizedBox(height: verticalSpacing),
                 TranslationSection(),
@@ -62,7 +63,12 @@ class HomeScreen extends StatelessWidget {
           ),
 
           // Floating Bottom NavBar
-          Positioned(left: 0, right: 0, bottom: 0, child: CustomBottomNavBar()),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: CustomBottomNavBar(),
+          ),
         ],
       ),
     );

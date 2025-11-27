@@ -1,3 +1,5 @@
+import 'package:demo/controllers/lilli_controllers/login_controller.dart';
+import 'package:demo/views/screens/Authentication/login_screen.dart';
 import 'package:get/get.dart';
 
 class SettingsController extends GetxController {
@@ -13,5 +15,13 @@ class SettingsController extends GetxController {
     // Your logout logic here
     hideLogoutPopup();
     // Navigate to login page
+
+  // CLEAR LOGIN FIELDS
+  final loginCtrl = Get.find<LoginController>();
+  loginCtrl.emailController.clear();
+  loginCtrl.passwordController.clear();
+  loginCtrl.emailError.value = "";
+  loginCtrl.passwordError.value = "";
+    Get.to(()=>LoginScreen(),transition: .noTransition,duration: Duration(seconds: 0));
   }
 }

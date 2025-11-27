@@ -12,8 +12,8 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CommonPage(
-      showAppBar: true,
       text: "Notifications",
+      showBackButton: true,
       child: Obx(() {
         final grouped = controller.notificationsByLabel;
 

@@ -17,7 +17,8 @@ class EditProfileScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return CommonPage(
-      showAppBar: true,
+      showAppBar: false,
+      showBackButton: true,
       text: "Edit Profile",
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
@@ -45,7 +46,7 @@ class EditProfileScreen extends StatelessWidget {
                   ),
 
                   /// UPLOAD ICON
-                  Positioned( 
+                  Positioned(
                     bottom: 5,
                     right: 5,
                     child: GestureDetector(
@@ -64,10 +65,11 @@ class EditProfileScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: const Icon(
-                          Icons.camera_alt,
+                        child: SvgPicture.asset(
+                          "assets/icons/camera_alt.svg", // Your SVG file path
+                          width: 18,
+                          height: 18,
                           color: Colors.white,
-                          size: 18,
                         ),
                       ),
                     ),
@@ -84,11 +86,9 @@ class EditProfileScreen extends StatelessWidget {
               label: "Enter your full name",
               prefixSvg: "assets/icons/person.svg",
               height: 56,
-              
             ),
 
             SizedBox(height: screenHeight * 0.08), // responsive spacing
-
             /// SAVE BUTTON
             CustomButton(
               title: "Save",

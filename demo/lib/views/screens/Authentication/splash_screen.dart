@@ -52,11 +52,19 @@ class SplashScreen extends StatelessWidget {
 
           const Spacer(),
           Padding(
-            padding: EdgeInsets.only(left: 20, right: 20, bottom: bottomPadding),
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+              bottom: bottomPadding,
+            ),
             child: CustomButton(
               title: "Get started",
               onTap: () {
-                Get.to(WelcomeScreen());
+                Get.to(
+                  () => WelcomeScreen(),
+                  transition: .noTransition,
+                  duration: Duration(seconds: 0),
+                );
               },
               width: MediaQuery.of(context).size.width,
             ),

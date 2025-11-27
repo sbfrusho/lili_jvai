@@ -114,14 +114,14 @@ class ForgotPasswordScreen extends StatelessWidget {
                           final otpController = Get.put(OtpVerificationController());
                           otpController.setEmail(controller.getEmail());
                           
-                          Get.to(() => const OtpVerificationScreen());
+                          Get.to(() => const OtpVerificationScreen(), transition: .noTransition, duration: Duration(seconds: 0));
                         }
                       }
                     : null,
                 width: screenWidth,
                 backgroundColor: controller.isButtonEnabled.value
-                    ? const Color(0xFFFFCB59)
-                    : Colors.white24,
+                    ? const Color(0xFFFFCB59).withOpacity(0.2)
+                    : Colors.white.withOpacity(0.2),
               );
             }),
 

@@ -211,7 +211,7 @@ class NewPasswordController extends GetxController {
       
       // Temporary: Remove this delay when implementing API
       await Future.delayed(const Duration(seconds: 1));
-      Get.to(LoginScreen());
+      Get.to(LoginScreen(), transition: .noTransition, duration: Duration(seconds: 0));
 
       // Success message
       Get.snackbar(

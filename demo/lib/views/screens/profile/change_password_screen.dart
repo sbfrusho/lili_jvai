@@ -14,7 +14,8 @@ class ChangePasswordScreen extends StatelessWidget {
     final controller = Get.put(ChangePasswordController());
 
     return CommonPage(
-      showAppBar: true,
+      showAppBar: false,
+      showBackButton: true,
       text: "Change Password",
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
@@ -29,7 +30,7 @@ class ChangePasswordScreen extends StatelessWidget {
               height: 56,
               radius: 24,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
 
             /// NEW PASSWORD
             CustomTextField(
@@ -41,7 +42,7 @@ class ChangePasswordScreen extends StatelessWidget {
               height: 56,
               radius: 24,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
 
             /// CONFIRM PASSWORD
             CustomTextField(
@@ -53,7 +54,7 @@ class ChangePasswordScreen extends StatelessWidget {
               height: 56,
               radius: 24,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
 
             /// PASSWORD MATCH CHECKBOX
             Obx(() => Row(
@@ -92,7 +93,7 @@ class ChangePasswordScreen extends StatelessWidget {
                   ],
                 )),
 
-            const SizedBox(height: 40),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.15),
 
             /// SAVE BUTTON
             CustomButton(

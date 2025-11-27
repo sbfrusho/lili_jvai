@@ -267,7 +267,7 @@ class SignUpController extends GetxController {
         'Error',
         'Sign up failed: ${e.toString()}',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.white.withOpacity(0.08),
         colorText: Colors.white,
         duration: const Duration(seconds: 3),
       );

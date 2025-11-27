@@ -28,10 +28,10 @@ class AddSubmissionScreen extends StatelessWidget {
 
   Widget buildSection({required Widget child}) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.12),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: child,
     );
@@ -49,25 +49,25 @@ class AddSubmissionScreen extends StatelessWidget {
     double radius(double r) => r * (screenWidth / 375);
 
     return CommonPage(
-      showAppBar: true,
       text: "Add New",
+      showBackButton: true,
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // --- Date ---
-              SizedBox(height: verticalSpace(0.02)),
+              SizedBox(height: verticalSpace(0.015)),
               Text(
                 today,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: fontSize(18),
+                  fontSize: fontSize(16),
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              SizedBox(height: verticalSpace(0.02)),
+              SizedBox(height: verticalSpace(0.025)),
 
               // --- Scrollable Content ---
               Expanded(
@@ -84,17 +84,19 @@ class AddSubmissionScreen extends StatelessWidget {
                               "Type / Category",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: fontSize(18),
+                                fontSize: fontSize(16),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(height: verticalSpace(0.005)),
+                            SizedBox(height: verticalSpace(0.012)),
                             Obx(
                               () => Container(
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.03,
+                                  horizontal: screenWidth * 0.04,
+                                  vertical: 4,
                                 ),
                                 decoration: BoxDecoration(
+                    
                                   color: Colors.white.withOpacity(0.08),
                                   borderRadius: BorderRadius.circular(radius(12)),
                                   border: Border.all(
@@ -110,34 +112,56 @@ class AddSubmissionScreen extends StatelessWidget {
                                   dropdownColor: Colors.white.withOpacity(0.12),
                                   underline: const SizedBox(),
                                   hint: Text(
-                                    "Select category",
+                                    "Select One",
                                     style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: fontSize(16),
-                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white.withOpacity(0.7),
+                                      fontSize: fontSize(15),
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  // Selected value style (shows in main container)
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: fontSize(16),
+                                    fontSize: fontSize(15),
                                     fontWeight: FontWeight.w600,
                                   ),
                                   icon: const Icon(
                                     Icons.keyboard_arrow_down,
                                     color: Colors.white,
                                   ),
+                                  selectedItemBuilder: (BuildContext context) {
+                                    return ["", ...categories].map<Widget>((String item) {
+                                      if (item.isEmpty) {
+                                        return Text(
+                                          "Select one",
+                                          style: TextStyle(
+                                            color: Colors.white.withOpacity(0.7),
+                                            fontSize: fontSize(15),
+                                          ),
+                                        );
+                                      }
+                                      return Text(
+                                        item,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: fontSize(15),
+                                          fontWeight: FontWeight.w600,
+                                          
+                                        ),
+                                        textAlign: .center,
+                                      );
+                                    }).toList();
+                                  },
                                   items: [
                                     // "Select one" option
                                     DropdownMenuItem<String>(
                                       value: "",
                                       child: Container(
                                         padding: EdgeInsets.symmetric(
-                                          vertical: verticalSpace(0.012),
-                                          horizontal: screenWidth * 0.03,
+                                          vertical: verticalSpace(0.015),
+                                          horizontal: screenWidth * 0.04,
                                         ),
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(radius(8)),
+                                          borderRadius: BorderRadius.circular(radius(10)),
                                           border: Border.all(
                                             color: Colors.white.withOpacity(0.5),
                                             width: 0.5,
@@ -146,8 +170,8 @@ class AddSubmissionScreen extends StatelessWidget {
                                         child: Text(
                                           "Select one",
                                           style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: fontSize(16),
+                                            color: Colors.white.withOpacity(0.7),
+                                            fontSize: fontSize(15),
                                           ),
                                         ),
                                       ),
@@ -159,11 +183,11 @@ class AddSubmissionScreen extends StatelessWidget {
                                         value: cat,
                                         child: Container(
                                           padding: EdgeInsets.symmetric(
-                                            vertical: verticalSpace(0.012),
-                                            horizontal: screenWidth * 0.03,
+                                            vertical: verticalSpace(0.015),
+                                            horizontal: screenWidth * 0.04,
                                           ),
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(radius(8)),
+                                            borderRadius: BorderRadius.circular(radius(10)),
                                             border: Border.all(
                                               color: Colors.white.withOpacity(0.5),
                                               width: 0.5,
@@ -176,12 +200,12 @@ class AddSubmissionScreen extends StatelessWidget {
                                                 cat,
                                                 style: TextStyle(
                                                   color: Colors.white,
-                                                  fontSize: fontSize(16),
+                                                  fontSize: fontSize(15),
                                                 ),
                                               ),
                                               Container(
-                                                width: screenWidth * 0.06,
-                                                height: screenWidth * 0.06,
+                                                width: screenWidth * 0.055,
+                                                height: screenWidth * 0.055,
                                                 decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: isSelected
@@ -196,7 +220,7 @@ class AddSubmissionScreen extends StatelessWidget {
                                                     ? Icon(
                                                         Icons.check,
                                                         color: Colors.black,
-                                                        size: fontSize(14),
+                                                        size: fontSize(12),
                                                       )
                                                     : null,
                                               ),
@@ -215,7 +239,7 @@ class AddSubmissionScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(height: verticalSpace(0.02)),
+                      SizedBox(height: verticalSpace(0.018)),
 
                       // --- Source Text ---
                       buildSection(
@@ -226,11 +250,11 @@ class AddSubmissionScreen extends StatelessWidget {
                               "Source Text",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: fontSize(18),
+                                fontSize: fontSize(16),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(height: verticalSpace(0.005)),
+                            SizedBox(height: verticalSpace(0.012)),
                             CustomTextField(
                               label: "Enter text",
                               controller: sourceController,
@@ -239,7 +263,7 @@ class AddSubmissionScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(height: verticalSpace(0.02)),
+                      SizedBox(height: verticalSpace(0.018)),
 
                       // --- Known Translation ---
                       buildSection(
@@ -250,11 +274,11 @@ class AddSubmissionScreen extends StatelessWidget {
                               "Known Translation (IF any)",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: fontSize(18),
+                                fontSize: fontSize(16),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(height: verticalSpace(0.005)),
+                            SizedBox(height: verticalSpace(0.012)),
                             CustomTextField(
                               label: "Enter known translation",
                               controller: knownController,
@@ -263,7 +287,7 @@ class AddSubmissionScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(height: verticalSpace(0.02)),
+                      SizedBox(height: verticalSpace(0.018)),
 
                       // --- Context / Notes ---
                       buildSection(
@@ -274,19 +298,22 @@ class AddSubmissionScreen extends StatelessWidget {
                               "Add Context or Notes",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: fontSize(18),
+                                fontSize: fontSize(16),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(height: verticalSpace(0.005)),
+                            SizedBox(height: verticalSpace(0.012)),
                             CustomTextField(
                               label: "Enter context or notes",
                               controller: contextController,
                               radius: 12,
+                              maxLines: 4,
+                              textAlignVertical: TextAlignVertical.top,
                             ),
                           ],
                         ),
                       ),
+                      SizedBox(height: verticalSpace(0.01)),
                     ],
                   ),
                 ),
@@ -299,8 +326,8 @@ class AddSubmissionScreen extends StatelessWidget {
                 title: "Submit",
                 backgroundColor: Colors.white.withOpacity(0.2),
                 width: double.infinity,
-                height: 56,
-                borderRadius: radius(20),
+                height: 52,
+                borderRadius: radius(16),
                 onTap: () {
                   if (sourceController.text.isEmpty ||
                       selectedCategory.value.isEmpty) {
@@ -326,6 +353,7 @@ class AddSubmissionScreen extends StatelessWidget {
                   );
                 },
               ),
+              SizedBox(height: verticalSpace(0.01)),
             ],
           ),
         ),

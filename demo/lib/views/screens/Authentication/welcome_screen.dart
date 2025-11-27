@@ -70,7 +70,7 @@ class WelcomeScreen extends StatelessWidget {
                       title: "Sign Up",
                       width: screenWidth,
                       onTap: () {
-                        Get.to(() => const SignUpScreen());
+                        Get.to(() => const SignUpScreen(), transition: .noTransition, duration: Duration(seconds: 0));
                       },
                     ),
 
@@ -80,7 +80,7 @@ class WelcomeScreen extends StatelessWidget {
                       title: "Login",
                       width: screenWidth,
                       onTap: () {
-                        Get.to(() => LoginScreen());
+                        Get.to(() => LoginScreen(), transition: .noTransition, duration: Duration(seconds: 0));
                       },
                     ),
                   ],

@@ -4,6 +4,7 @@ import 'package:demo/utils/lilli_utils/custon_bottom_navbar.dart';
 import 'package:demo/utils/lilli_utils/custom_button.dart';
 import 'package:demo/utils/lilli_utils/settings_option_tile.dart';
 import 'package:demo/utils/lilli_utils/settings_switch_tile.dart';
+import 'package:demo/views/screens/Subscription/basic_subscription.dart';
 import 'package:demo/views/screens/profile/about_us_screen.dart';
 import 'package:demo/views/screens/profile/change_password_screen.dart';
 import 'package:demo/views/screens/profile/edit_profile_screen.dart';
@@ -18,7 +19,8 @@ class ProfileSettingsScreen extends StatelessWidget {
     final controller = Get.put(SettingsController());
 
     return CommonPage(
-      showAppBar: true,
+      showAppBar: false,
+      showBackButton: true,
       text: "Profile",
       child: Stack(
         children: [
@@ -111,7 +113,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                               SettingsOptionTile(
                                 icon: "assets/icons/settings_manage_sub.svg",
                                 title: "Manage Subscription",
-                                onTap: () {},
+                                onTap: () {Get.to(BasicSubscription());},
                               ),
 
                               // Terms of Service
@@ -191,7 +193,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                             Expanded(
                               child: CustomButton(
                                 title: "Yes",
-                                onTap: controller.hideLogoutPopup,
+                                onTap: controller.logout,
                                 backgroundColor: Colors.white.withOpacity(0.2),
                                 textStyle: const TextStyle(color: Colors.white),
                                 height: 50,
@@ -202,7 +204,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                             Expanded(
                               child: CustomButton(
                                 title: "No",
-                                onTap: controller.logout,
+                                onTap: controller.hideLogoutPopup,
                                 backgroundColor: Colors.white,
                                 textStyle: const TextStyle(color: Colors.black),
                                 height: 50,

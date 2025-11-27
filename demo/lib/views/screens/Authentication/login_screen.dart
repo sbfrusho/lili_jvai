@@ -1,3 +1,4 @@
+import 'package:demo/controllers/lilli_controllers/signup_controller.dart';
 import 'package:demo/utils/lilli_utils/custom_text_field.dart';
 import 'package:demo/views/screens/Authentication/forgot_password.dart';
 import 'package:demo/views/screens/Authentication/sign_up_screen.dart';
@@ -15,11 +16,14 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Initialize controller
     final LoginController controller = Get.put(LoginController());
+    final SignUpController signUpController = Get.put(SignUpController());
+    // controller.clearFields();
     
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final horizontalPadding = screenWidth * 0.05;
     final verticalSpacing = screenHeight * 0.02;
+    
 
     return CommonPage(
       child: SingleChildScrollView(
@@ -116,7 +120,7 @@ class LoginScreen extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: GestureDetector(
-                onTap: () => Get.to(() => ForgotPasswordScreen()),
+                onTap: () => Get.to(() => ForgotPasswordScreen(), transition: .noTransition, duration: Duration(seconds: 0)),
                 child: Text(
                   "Forgot Password?",
                   style: TextStyle(
@@ -146,7 +150,11 @@ class LoginScreen extends StatelessWidget {
 
             // Sign Up link
             GestureDetector(
-              onTap: () => Get.to(() => const SignUpScreen()),
+              onTap: () {
+                signUpController.clearFields();
+                Get.to(() => const SignUpScreen(), transition: .noTransition, duration: Duration(seconds: 0));
+
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

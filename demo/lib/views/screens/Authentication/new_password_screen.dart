@@ -61,7 +61,7 @@ class NewPasswordScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: screenWidth * 0.04,
                 fontWeight: FontWeight.w400,
-                color: Colors.white70,
+                color: Colors.white,
               ),
             ),
 
@@ -74,6 +74,7 @@ class NewPasswordScreen extends StatelessWidget {
               prefixSvg: "assets/icons/lock.svg",
               height: 48,
               isPassword: true,
+              radius: 24,
             ),
 
             // New Password Error
@@ -83,7 +84,7 @@ class NewPasswordScreen extends StatelessWidget {
                     child: Text(
                       controller.newPasswordError.value,
                       style: const TextStyle(
-                        color: Colors.redAccent,
+                        color: Colors.white,
                         fontSize: 12,
                       ),
                     ),
@@ -94,17 +95,10 @@ class NewPasswordScreen extends StatelessWidget {
             Obx(() {
               final strength = controller.passwordStrength.value;
               final strengthText = controller.passwordStrengthText.value;
-              final passwordText = controller.currentNewPassword.value; // Use observable
+              final passwordText = controller.currentNewPassword.value;
               
               if (passwordText.isEmpty) {
                 return const SizedBox.shrink();
-              }
-
-              Color strengthColor = Colors.red;
-              if (strength > 0.7) {
-                strengthColor = Colors.green;
-              } else if (strength > 0.4) {
-                strengthColor = Colors.orange;
               }
 
               return Padding(
@@ -115,14 +109,14 @@ class NewPasswordScreen extends StatelessWidget {
                     LinearProgressIndicator(
                       value: strength,
                       backgroundColor: Colors.white24,
-                      color: strengthColor,
+                      color: Colors.white,
                       minHeight: 4,
                     ),
                     const SizedBox(height: 4),
                     Text(
                       'Password Strength: $strengthText',
-                      style: TextStyle(
-                        color: strengthColor,
+                      style: const TextStyle(
+                        color: Colors.white,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -136,7 +130,7 @@ class NewPasswordScreen extends StatelessWidget {
 
             // Password Requirements
             Obx(() {
-              final passwordText = controller.currentNewPassword.value; // Use observable
+              final passwordText = controller.currentNewPassword.value;
               
               if (passwordText.isEmpty) {
                 return const SizedBox.shrink();
@@ -148,7 +142,7 @@ class NewPasswordScreen extends StatelessWidget {
                   color: Colors.white.withOpacity(0.05),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: Colors.white24,
+                    color: Colors.white,
                     width: 1,
                   ),
                 ),
@@ -174,21 +168,15 @@ class NewPasswordScreen extends StatelessWidget {
                                   ? Icons.check_circle
                                   : Icons.radio_button_unchecked,
                               size: 16,
-                              color: req['met']
-                                  ? Colors.greenAccent
-                                  : Colors.white54,
+                              color: Colors.white,
                             ),
                             const SizedBox(width: 8),
                             Text(
                               req['text'],
-                              style: TextStyle(
-                                color: req['met']
-                                    ? Colors.greenAccent
-                                    : Colors.white70,
+                              style: const TextStyle(
+                                color: Colors.white,
                                 fontSize: 12,
-                                fontWeight: req['met']
-                                    ? FontWeight.w500
-                                    : FontWeight.w400,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ],
@@ -209,6 +197,7 @@ class NewPasswordScreen extends StatelessWidget {
               prefixSvg: "assets/icons/lock.svg",
               height: 48,
               isPassword: true,
+              radius: 24,
             ),
 
             // Confirm Password Error
@@ -218,7 +207,7 @@ class NewPasswordScreen extends StatelessWidget {
                     child: Text(
                       controller.confirmPasswordError.value,
                       style: const TextStyle(
-                        color: Colors.redAccent,
+                        color: Colors.white,
                         fontSize: 12,
                       ),
                     ),
@@ -227,59 +216,37 @@ class NewPasswordScreen extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // Password Match Indicator
+            // Password Match Indicator - Always visible when there's text
             Obx(() {
-              final confirmText = controller.currentConfirmPassword.value; // Use observable
+              final confirmText = controller.currentConfirmPassword.value;
               
               if (confirmText.isEmpty) {
                 return const SizedBox.shrink();
               }
 
-              return Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: controller.passwordsMatch.value
-                      ? Colors.green.withOpacity(0.1)
-                      : Colors.orange.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: controller.passwordsMatch.value
-                        ? Colors.greenAccent
-                        : Colors.orange,
-                    width: 1,
+              return Row(
+                children: [
+                  Icon(
+                    controller.passwordsMatch.value
+                        ? Icons.check_circle
+                        : Icons.circle_outlined,
+                    color: Colors.white,
+                    size: 20,
                   ),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
                       controller.passwordsMatch.value
-                          ? Icons.check_circle
-                          : Icons.info_outline,
-                      color: controller.passwordsMatch.value
-                          ? Colors.greenAccent
-                          : Colors.orange,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        controller.passwordsMatch.value
-                            ? "Passwords match ✓"
-                            : "Passwords must match",
-                        style: TextStyle(
-                          color: controller.passwordsMatch.value
-                              ? Colors.greenAccent
-                              : Colors.orange,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
+                          ? "Passwords match "
+                          : "Passwords match",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               );
             }),
 
@@ -300,8 +267,8 @@ class NewPasswordScreen extends StatelessWidget {
                 height: 53,
                 width: screenWidth,
                 backgroundColor: controller.passwordsMatch.value
-                    ? const Color(0xFFFFCB59)
-                    : Colors.white24,
+                    ? const Color(0xFFFFffff).withOpacity(0.2)
+                    : Colors.white.withOpacity(0.2),
                 onTap: controller.passwordsMatch.value
                     ? controller.updatePassword
                     : null,
