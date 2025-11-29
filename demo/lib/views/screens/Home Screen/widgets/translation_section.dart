@@ -20,8 +20,8 @@ class TranslationSection extends StatelessWidget {
       return baseSize;
     }
 
-    final titleFontSize = getResponsiveFontSize(28);
-    final resultFontSize = getResponsiveFontSize(18);
+    final titleFontSize = getResponsiveFontSize(18);
+    final resultFontSize = getResponsiveFontSize(14);
 
     // Convert current translation to FavoriteModel
     FavoriteModel? currentTranslation() {

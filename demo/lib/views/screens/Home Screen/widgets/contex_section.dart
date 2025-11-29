@@ -25,9 +25,9 @@ class ContextSection extends StatelessWidget {
       return baseSize;
     }
 
-    final titleFontSize = getResponsiveFontSize(28);
-    final contextFontSize = getResponsiveFontSize(15);
-    final buttonFontSize = getResponsiveFontSize(15);
+    final titleFontSize = getResponsiveFontSize(18);
+    final contextFontSize = getResponsiveFontSize(14);
+    final buttonFontSize = getResponsiveFontSize(16);
 
     return Obx(() {
       if (!controller.showContextSection.value) {

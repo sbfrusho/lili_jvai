@@ -141,7 +141,7 @@ class SubmissionListScreen extends StatelessWidget {
                                const Spacer(),
                               Container(
                                 width: 1,
-                                height: 40,
+                                height: 24,
                                 color: Colors.white.withOpacity(0.4),
                                 margin: const EdgeInsets.symmetric(horizontal: 8), // Reduced gap
                               ),

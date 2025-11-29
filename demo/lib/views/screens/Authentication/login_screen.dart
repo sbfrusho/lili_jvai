@@ -66,7 +66,7 @@ class LoginScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: screenWidth * 0.04,
                 fontWeight: FontWeight.w400,
-                color: Colors.white70,
+                color: Colors.white,
               ),
             ),
             SizedBox(height: verticalSpacing * 2),
@@ -181,7 +181,7 @@ class LoginScreen extends StatelessWidget {
             // Divider
             const Row(
               children: [
-                Expanded(child: Divider(thickness: 1, color: Colors.white54)),
+                Expanded(child: Divider(thickness: 1, color: Colors.white)),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
@@ -193,7 +193,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Expanded(child: Divider(thickness: 1, color: Colors.white54)),
+                Expanded(child: Divider(thickness: 1, color: Colors.white)),
               ],
             ),
             const SizedBox(height: 50),
@@ -210,6 +210,7 @@ class LoginScreen extends StatelessWidget {
                           onTap: controller.loginWithGoogle,
                           prefixImageAsset: "assets/icons/google_icon.svg",
                           width: screenWidth,
+                          backgroundOpacity: 0,
                         ),
                       ),
                       SizedBox(width: horizontalPadding / 2),
@@ -220,6 +221,7 @@ class LoginScreen extends StatelessWidget {
                           onTap: controller.loginWithApple,
                           prefixImageAsset: "assets/icons/apple_icon.svg",
                           width: screenWidth,
+                          backgroundOpacity: 0,
                         ),
                       ),
                     ],

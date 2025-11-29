@@ -64,7 +64,7 @@ class SignUpScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: screenWidth * 0.04,
                 fontWeight: FontWeight.w400,
-                color: Colors.white70,
+                color: Colors.white,
               ),
             ),
             SizedBox(height: verticalSpacing * 2),
@@ -167,7 +167,7 @@ class SignUpScreen extends StatelessWidget {
                   children: [
                     LinearProgressIndicator(
                       value: strength,
-                      backgroundColor: Colors.white24,
+                      backgroundColor: Colors.white,
                       color: strengthColor,
                       minHeight: 4,
                     ),
@@ -193,6 +193,7 @@ class SignUpScreen extends StatelessWidget {
               isPassword: true,
               prefixSvg: "assets/icons/lock.svg",
               height: 48,
+              
             ),
             // Confirm Password Error Message
             Obx(
@@ -202,7 +203,7 @@ class SignUpScreen extends StatelessWidget {
                       child: Text(
                         controller.confirmPasswordError.value,
                         style: const TextStyle(
-                          color: Colors.redAccent,
+                          color: Colors.white,
                           fontSize: 12,
                         ),
                       ),
@@ -338,7 +339,7 @@ class SignUpScreen extends StatelessWidget {
                 Expanded(child: Divider(thickness: 1, color: Colors.white)),
               ],
             ),
-            SizedBox(height: verticalSpacing),
+            SizedBox(height: verticalSpacing * 1.25),
 
             // Social Buttons
             Obx(
@@ -353,6 +354,7 @@ class SignUpScreen extends StatelessWidget {
                             onTap: controller.signUpWithGoogle,
                             prefixImageAsset: "assets/icons/google_icon.svg",
                             width: screenWidth,
+                            backgroundOpacity: 0,
                           ),
                         ),
                         SizedBox(width: horizontalPadding / 2),
@@ -363,6 +365,7 @@ class SignUpScreen extends StatelessWidget {
                             onTap: controller.signUpWithApple,
                             prefixImageAsset: "assets/icons/apple_icon.svg",
                             width: screenWidth,
+                            backgroundOpacity: 0,
                           ),
                         ),
                       ],

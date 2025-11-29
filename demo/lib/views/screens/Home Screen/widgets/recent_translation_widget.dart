@@ -24,10 +24,10 @@ class RecentTranslationWidget extends StatelessWidget {
       return baseSize;
     }
 
-    final titleFontSize = getResponsiveFontSize(20);
-    final labelFontSize = getResponsiveFontSize(11);
-    final textFontSize = getResponsiveFontSize(15);
-    final categoryFontSize = getResponsiveFontSize(12);
+    final titleFontSize = getResponsiveFontSize(18);
+    final labelFontSize = getResponsiveFontSize(14);
+    final textFontSize = getResponsiveFontSize(16);
+    final categoryFontSize = getResponsiveFontSize(14);
 
     return Container(
       width: double.infinity,
@@ -231,33 +231,24 @@ class RecentTranslationWidget extends StatelessWidget {
                             
                             SizedBox(width: screenWidth * 0.02),
                             
+                            Container(
+                            width: 1,
+                            height: 24,
+                            color: Colors.white.withOpacity(0.4),
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                          ),
                             // Category badge and arrow
                             Column(
                               children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: screenWidth * 0.025,
-                                    vertical: screenHeight * 0.006,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFFFCD60).withOpacity(0.3),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(
-                                    translation['category'] ?? 'General',
-                                    style: TextStyle(
-                                      fontSize: categoryFontSize,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                    ),
+                                Text(
+                                  translation['category'] ?? 'General',
+                                  style: TextStyle(
+                                    fontSize: categoryFontSize,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
                                   ),
                                 ),
-                                SizedBox(height: screenHeight * 0.008),
-                                Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 14,
-                                  color: Colors.white.withOpacity(0.5),
-                                ),
+                                
                               ],
                             ),
                           ],

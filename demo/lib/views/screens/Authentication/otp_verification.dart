@@ -67,7 +67,7 @@ class OtpVerificationScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: screenWidth * 0.04,
                   fontWeight: FontWeight.w400,
-                  color: Colors.white70,
+                  color: Colors.white,
                 ),
               );
             }),
@@ -106,28 +106,28 @@ class OtpVerificationScreen extends StatelessWidget {
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.05),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(20),
                         borderSide: const BorderSide(
-                          color: Colors.white38,
-                          width: 1,
+                          color: Colors.white,
+                          width: 0.5,
                         ),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(20),
                         borderSide: const BorderSide(
-                          color: Colors.white38,
+                          color: Colors.white,
                           width: 1,
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(20),
                         borderSide: const BorderSide(
                           color: Color(0xFFFFCB59),
                           width: 2,
                         ),
                       ),
                       errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(20),
                         borderSide: const BorderSide(
                           color: Colors.red,
                           width: 1,
@@ -147,7 +147,7 @@ class OtpVerificationScreen extends StatelessWidget {
                       controller.otpError.value,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        color: Colors.redAccent,
+                        color: Colors.white,
                         fontSize: 12,
                       ),
                     ),
@@ -200,6 +200,7 @@ class OtpVerificationScreen extends StatelessWidget {
               return CustomButton(
                 title: "Verify OTP",
                 height: 53,
+                backgroundOpacity: 0.2,
                 onTap: controller.isButtonEnabled.value
                     ? () async {
                         final success = await controller.verifyOtp();

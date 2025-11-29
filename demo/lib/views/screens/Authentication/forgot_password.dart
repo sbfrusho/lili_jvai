@@ -62,7 +62,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: screenWidth * 0.04,
                 fontWeight: FontWeight.w400,
-                color: Colors.white70,
+                color: Colors.white,
               ),
             ),
 
@@ -74,6 +74,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               label: "Enter your email",
               prefixSvg: "assets/icons/email.svg",
               height: 48,
+              radius: 24,
             ),
             
             // Email Error Message
@@ -105,6 +106,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               return CustomButton(
                 title: "Send Code",
                 height: 53,
+                backgroundOpacity: 0.2,
                 onTap: controller.isButtonEnabled.value
                     ? () async {
                         // Send reset link and navigate only on success
@@ -119,9 +121,6 @@ class ForgotPasswordScreen extends StatelessWidget {
                       }
                     : null,
                 width: screenWidth,
-                backgroundColor: controller.isButtonEnabled.value
-                    ? const Color(0xFFFFCB59).withOpacity(0.2)
-                    : Colors.white.withOpacity(0.2),
               );
             }),
 
