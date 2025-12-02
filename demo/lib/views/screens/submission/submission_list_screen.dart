@@ -1,4 +1,3 @@
-
 import 'package:demo/controllers/lilli_controllers/submission_controller.dart';
 import 'package:demo/models/lilli_models/submission_model.dart';
 import 'package:demo/utils/lilli_utils/common_page.dart';
@@ -20,8 +19,7 @@ class SubmissionListScreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    final today = DateFormat('MMMM dd, yyyy').format(DateTime.now());
-
+    final today = DateFormat('dd MMM yyyy').format(DateTime.now());
     return CommonPage(
       text: "Submission",
       child: Stack(
@@ -34,14 +32,24 @@ class SubmissionListScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /// --- DATE ---
-                Text(
-                  "Date: $today",
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                /// --- DATE AND NOTIFICATION ICON ROW ---
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      today,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SvgPicture.asset(
+                      "assets/icons/notification_icon.svg",
+                      width: 24,
+                      height: 24,
+                    ),
+                  ],
                 ),
                 SizedBox(height: screenHeight * 0.02),
 
@@ -52,7 +60,7 @@ class SubmissionListScreen extends StatelessWidget {
                       return const Center(
                         child: Text(
                           "No submissions yet",
-                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                          style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
                       );
                     }
@@ -143,7 +151,7 @@ class SubmissionListScreen extends StatelessWidget {
                                 width: 1,
                                 height: 24,
                                 color: Colors.white.withOpacity(0.4),
-                                margin: const EdgeInsets.symmetric(horizontal: 8), // Reduced gap
+                                margin: const EdgeInsets.symmetric(horizontal: 8),
                               ),
                               
                               /// --- Category & Delete Group ---
@@ -156,7 +164,6 @@ class SubmissionListScreen extends StatelessWidget {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          
                                           const SizedBox(height: 4),
                                           Text(
                                             item.category,
@@ -170,7 +177,7 @@ class SubmissionListScreen extends StatelessWidget {
                                       ),
                                     ),
 
-                                    const SizedBox(width: 8), // Reduced gap
+                                    const SizedBox(width: 8),
 
                                     /// --- Delete Button ---
                                     GestureDetector(

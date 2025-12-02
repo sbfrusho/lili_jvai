@@ -164,9 +164,10 @@ class AiUpdateScreen extends StatelessWidget {
                                                         ),
                                                       ),
                                                       SizedBox(height: 8),
-                                                      const CustomTextField(
+                                                      CustomTextField(
                                                         label: "Bone",
                                                         prefixSvg: "assets/icons/search.svg",
+                                                        height: constraints.maxWidth > 600 ? 52 : 48,
                                                       ),
                                                     ],
                                                   ),
@@ -444,9 +445,10 @@ class AiUpdateScreen extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(height: 8),
-                                  const CustomTextField(
+                                  CustomTextField(
                                     label: "Bone",
                                     prefixSvg: "assets/icons/search.svg",
+                                    height: constraints.maxWidth > 600 ? 52 : 48,
                                   ),
                                 ],
                               ),
@@ -561,9 +563,10 @@ class AiUpdateScreen extends StatelessWidget {
                                             vertical: constraints.maxWidth > 600 ? 6 : 4,
                                           ),
                                           decoration: BoxDecoration(
+                                            color: Colors.white.withOpacity(0.2),
                                             borderRadius: BorderRadius.circular(6),
                                             border: Border.all(
-                                              color: Colors.white.withOpacity(0.2),
+                                              color: Colors.white.withOpacity(0.5),
                                             ),
                                           ),
                                           child: Text(

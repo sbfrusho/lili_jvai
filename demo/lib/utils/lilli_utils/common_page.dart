@@ -117,7 +117,7 @@ class CommonPage extends StatelessWidget {
   final bool showBackButton;
 
   static const Color topColor = Color(0xFFFFCB59);
-  static const Color midColor = Color.fromARGB(255, 247, 155, 57);
+  static const Color midColor = Color(0xFFF6A652);
   static const Color bottomColor = Color(0xFFDA610F);
 
   const CommonPage({

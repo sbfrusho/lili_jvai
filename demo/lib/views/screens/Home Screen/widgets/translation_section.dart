@@ -21,7 +21,7 @@ class TranslationSection extends StatelessWidget {
     }
 
     final titleFontSize = getResponsiveFontSize(18);
-    final resultFontSize = getResponsiveFontSize(14);
+    final resultFontSize = getResponsiveFontSize(16);
 
     // Convert current translation to FavoriteModel
     FavoriteModel? currentTranslation() {
@@ -43,14 +43,15 @@ class TranslationSection extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            const Color(0xFFFFCD60).withOpacity(0.5),
-            const Color(0xFFFFFFFF).withOpacity(0.05),
-          ],
-        ),
+        // gradient: LinearGradient(
+        //   begin: Alignment.topLeft,
+        //   end: Alignment.bottomRight,
+        //   colors: [
+        //     const Color(0xFFFFCD60).withOpacity(0.2),
+        //     const Color(0xFFFFFFFF).withOpacity(0.05),
+        //   ],
+        // ),
+        color: Colors.white.withOpacity(0.12)
       ),
       padding: EdgeInsets.all(screenWidth * 0.04),
       child: Column(
@@ -60,7 +61,7 @@ class TranslationSection extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: screenWidth * 0.02,
-              vertical: screenHeight * 0.01,
+              // vertical: screenHeight * 0.001,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,17 +85,10 @@ class TranslationSection extends StatelessWidget {
                       controller.toggleFavorite(translation);
                       print("Favorites button clicked!");
                     },
-                    child: Container(
-                      padding: EdgeInsets.all(screenWidth * 0.02),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Icon(
-                        isFav ? Icons.favorite : Icons.favorite_border,
-                        color: Colors.white,
-                        size: 24,
-                      ),
+                    child: Icon(
+                      isFav ? Icons.favorite : Icons.favorite_border,
+                      color: Colors.white,
+                      size: 24,
                     ),
                   );
                 }),
