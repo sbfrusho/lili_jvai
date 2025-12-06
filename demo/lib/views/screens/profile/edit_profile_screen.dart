@@ -55,8 +55,9 @@ class EditProfileScreen extends StatelessWidget {
                         width: 36,
                         height: 36,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFFCB59),
-                          shape: BoxShape.circle,
+                          color: const Color.fromARGB(218, 167, 68, 29),
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(12 ),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withOpacity(0.2),
@@ -66,7 +67,7 @@ class EditProfileScreen extends StatelessWidget {
                           ],
                         ),
                         child: SvgPicture.asset(
-                          "assets/icons/camera_alt.svg", // Your SVG file path
+                          "assets/icons/up_final.svg", // Your SVG file path
                           width: 18,
                           height: 18,
                           color: Colors.white,

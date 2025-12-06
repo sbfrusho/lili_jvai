@@ -1,5 +1,6 @@
 import 'package:demo/controllers/lilli_controllers/forgot_password_controller.dart';
 import 'package:demo/controllers/lilli_controllers/otp_verification_controller.dart';
+import 'package:demo/utils/lilli_utils/custom_tex_field_auth.dart';
 import 'package:demo/utils/lilli_utils/custom_text_field.dart';
 import 'package:demo/views/screens/Authentication/otp_verification.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             SizedBox(height: verticalSpacing * 2),
 
             // Email Field
-            CustomTextField(
+            CustomTextFieldAuth(
               controller: controller.emailController,
               label: "Enter your email",
               prefixSvg: "assets/icons/email.svg",

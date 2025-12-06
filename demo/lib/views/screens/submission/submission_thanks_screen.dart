@@ -1,5 +1,6 @@
 import 'package:demo/views/screens/Home%20Screen/home_screen.dart';
 import 'package:demo/views/screens/submission/submission_list_screen.dart';
+import 'package:demo/controllers/lilli_controllers/bottom_navigation_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,6 +15,9 @@ class SubmissionThanksScreen extends StatelessWidget {
     final media = MediaQuery.of(context);
     final screenWidth = media.size.width;
     final screenHeight = media.size.height;
+    
+    // Get the bottom nav controller
+    final BottomNavController bottomNavController = Get.find<BottomNavController>();
 
     // Dynamic sizing
     double verticalSpace(double fraction) => screenHeight * fraction;
@@ -52,7 +56,8 @@ class SubmissionThanksScreen extends StatelessWidget {
                     backgroundColor: Colors.white.withOpacity(0.2),
                     borderRadius: radius(20),
                     onTap: () {
-                      Get.to(()=>HomeScreen(),transition: .noTransition, duration: Duration(seconds: 0));
+                      // Use the controller's navigate method to update bottom nav
+                      bottomNavController.navigateToHome();
                     },
                   ),
                 ),
@@ -62,7 +67,8 @@ class SubmissionThanksScreen extends StatelessWidget {
                 // --- See All Submissions Text Button ---
                 TextButton(
                   onPressed: () {
-                    Get.to(()=>SubmissionListScreen(),transition: .noTransition, duration: Duration(seconds: 0));
+                    // Use the controller's navigate method to update bottom nav
+                    bottomNavController.navigateToSubmissionScreen();
                   },
                   child: Text(
                     "See all my submissions",

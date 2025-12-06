@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CustomTextField extends StatefulWidget {
+class CustomTextFieldAuth extends StatefulWidget {
   final String label;
   final String? hint;
   final TextEditingController? controller;
@@ -17,7 +17,7 @@ class CustomTextField extends StatefulWidget {
   final TextAlignVertical? textAlignVertical;
   final FocusNode? focusNode;
 
-  const CustomTextField({
+  const CustomTextFieldAuth({
     super.key,
     required this.label,
     this.hint,
@@ -36,10 +36,10 @@ class CustomTextField extends StatefulWidget {
   });
 
   @override
-  State<CustomTextField> createState() => _CustomTextFieldState();
+  State<CustomTextFieldAuth> createState() => _CustomTextFieldAuthState();
 }
 
-class _CustomTextFieldState extends State<CustomTextField> {
+class _CustomTextFieldAuthState extends State<CustomTextFieldAuth> {
   bool _obscureText = true;
 
   @override
@@ -79,7 +79,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       height: widget.height,
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
+        color: Colors.white.withOpacity(0.04),
         borderRadius: BorderRadius.circular(widget.radius?.toDouble() ?? 12),
         border: Border.all(color: Colors.white.withOpacity(0.5), width: 0.5),
       ),

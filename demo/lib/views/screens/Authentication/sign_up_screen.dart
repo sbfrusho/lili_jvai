@@ -1,4 +1,5 @@
 import 'package:demo/controllers/lilli_controllers/login_controller.dart';
+import 'package:demo/utils/lilli_utils/custom_tex_field_auth.dart';
 import 'package:demo/utils/lilli_utils/custom_text_field.dart';
 import 'package:demo/views/screens/Authentication/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,7 @@ class SignUpScreen extends StatelessWidget {
             SizedBox(height: verticalSpacing * 2),
 
             // Full Name Field
-            CustomTextField(
+            CustomTextFieldAuth(
               controller: controller.nameController,
               label: "Enter your full name",
               prefixSvg: "assets/icons/person.svg",
@@ -94,7 +95,7 @@ class SignUpScreen extends StatelessWidget {
             const SizedBox(height: 12),
 
             // Email Field
-            CustomTextField(
+            CustomTextFieldAuth(
               controller: controller.emailController,
               label: "Enter your email",
               prefixSvg: "assets/icons/email.svg",
@@ -118,7 +119,7 @@ class SignUpScreen extends StatelessWidget {
             const SizedBox(height: 12),
 
             // Password Field
-            CustomTextField(
+            CustomTextFieldAuth(
               controller: controller.passwordController,
               label: "Enter 8+ Characters password",
               isPassword: true,
@@ -187,7 +188,7 @@ class SignUpScreen extends StatelessWidget {
             SizedBox(height: verticalSpacing),
 
             // Confirm Password Field
-            CustomTextField(
+            CustomTextFieldAuth(
               controller: controller.confirmPasswordController,
               label: "Re-enter your password",
               isPassword: true,
