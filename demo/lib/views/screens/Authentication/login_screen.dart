@@ -1,6 +1,5 @@
 import 'package:demo/controllers/lilli_controllers/signup_controller.dart';
 import 'package:demo/utils/lilli_utils/custom_tex_field_auth.dart';
-import 'package:demo/utils/lilli_utils/custom_text_field.dart';
 import 'package:demo/views/screens/Authentication/forgot_password.dart';
 import 'package:demo/views/screens/Authentication/sign_up_screen.dart';
 import 'package:flutter/material.dart';

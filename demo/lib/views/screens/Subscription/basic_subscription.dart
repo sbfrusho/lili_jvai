@@ -1,5 +1,6 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:demo/controllers/lilli_controllers/subscription_controller.dart';
-import 'package:demo/utils/lilli_utils/buy_now_button.dart';
 import 'package:demo/utils/lilli_utils/custom_button.dart';
 import 'package:demo/utils/lilli_utils/features_list.dart';
 import 'package:demo/utils/lilli_utils/pricing_card.dart';
@@ -23,17 +24,17 @@ class BasicSubscription extends StatelessWidget {
         builder: (context, constraints) {
           return Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: constraints.maxWidth > 600 ? 20 : 12, // Reduced horizontal padding
-              vertical: 12, // Reduced vertical padding
+              horizontal: constraints.maxWidth > 600 ? 20 : 12, 
+              vertical: 12, 
             ),
             child: Container(
-              width: double.infinity, // Increased width
+              width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.08),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Padding(
-                padding: EdgeInsets.all(constraints.maxWidth > 600 ? 16 : 12), // Reduced padding
+                padding: EdgeInsets.all(constraints.maxWidth > 600 ? 16 : 12),
                 child: Column(
                   children: [
                     SubscriptionTypeSelector(constraints: constraints),

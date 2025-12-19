@@ -46,19 +46,18 @@ class AuthController extends GetxController {
     String email,
     String password,
     String confirmPassword,
-    String language,
   ) async {
     try {
       isLoading(true);
-      final response = await api.post("/api/v1/auth/register/", {
+      final response = await api.post("/register/", {
         "full_name": name.trim(),
         "email": email.trim(),
         "password": password.trim(),
-        "language": language.trim(),
         "confirm_password": confirmPassword.trim(),
       });
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        print("Register Response==========>>>>>>$response");
         return "success";
       } else {
         return jsonDecode(response.body)['message'] ?? "Connection Error";

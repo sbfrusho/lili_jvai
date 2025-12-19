@@ -1,6 +1,5 @@
 import 'package:demo/controllers/lilli_controllers/login_controller.dart';
 import 'package:demo/utils/lilli_utils/custom_tex_field_auth.dart';
-import 'package:demo/utils/lilli_utils/custom_text_field.dart';
 import 'package:demo/views/screens/Authentication/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -194,7 +193,6 @@ class SignUpScreen extends StatelessWidget {
               isPassword: true,
               prefixSvg: "assets/icons/lock.svg",
               height: 48,
-              
             ),
             // Confirm Password Error Message
             Obx(
@@ -283,7 +281,14 @@ class SignUpScreen extends StatelessWidget {
                   : CustomButton(
                       title: "Sign Up",
                       height: 53,
-                      onTap: controller.signUp,
+                      onTap: () {
+                        controller.signUp(
+                          controller.nameController.text,
+                          controller.emailController.text,
+                          controller.passwordController.text,
+                          controller.confirmPasswordController.text,
+                        );
+                      },
                       width: screenWidth,
                     ),
             ),

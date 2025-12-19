@@ -1,5 +1,6 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:demo/controllers/lilli_controllers/submission_controller.dart';
-import 'package:demo/models/lilli_models/submission_model.dart';
 import 'package:demo/utils/lilli_utils/common_page.dart';
 import 'package:demo/utils/lilli_utils/custom_button.dart';
 import 'package:demo/utils/lilli_utils/custon_bottom_navbar.dart';

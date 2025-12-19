@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -28,7 +30,6 @@ class EditProfileController extends GetxController {
 
   // Load user data (from local storage or API)
   void _loadUserData() {
-    // TODO: Load from API or local storage
     fullNameController.text = "";
     emailController.text = "";
     phoneController.text = "";
@@ -37,7 +38,6 @@ class EditProfileController extends GetxController {
   // Pick image from gallery
   Future<void> pickImage() async {
     try {
-      // TODO: Implement image picker
       // Example:
       // final ImagePicker picker = ImagePicker();
       // final XFile? image = await picker.pickImage(source: ImageSource.gallery);
@@ -124,8 +124,6 @@ class EditProfileController extends GetxController {
       final name = fullNameController.text.trim();
       final email = emailController.text.trim();
       final phone = phoneController.text.trim();
-
-      // TODO: Implement your API call here
       // Example:
       // await UserService.updateProfile(
       //   name: name,

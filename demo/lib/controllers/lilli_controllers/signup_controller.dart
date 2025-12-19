@@ -1,4 +1,7 @@
-import 'package:demo/views/screens/Authentication/login_screen.dart';
+import 'dart:convert';
+
+import 'package:demo/services/api_service.dart';
+import 'package:demo/views/screens/Authentication/otp_verification.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,6 +29,7 @@ class SignUpController extends GetxController {
   // Password strength indicator
   final RxDouble passwordStrength = 0.0.obs;
   final RxString passwordStrengthText = ''.obs;
+  final api = ApiService();
 
   @override
   void onInit() {
@@ -235,31 +239,31 @@ class SignUpController extends GetxController {
         isConfirmPasswordValid &&
         isTermsValid;
   }
-
   // Sign Up function
-  Future<void> signUp() async {
+  Future<void> signUp( String name,
+    String email,
+    String password,
+    String confirmPassword,) async {
     // Validate form
     if (!_validateForm()) {
-      return;
+      return ;
     }
-
-    // Start loading
-    isLoading.value = true;
-
     try {
-      // TODO: Implement your API call here
-      // Example:
-      // final name = nameController.text.trim();
-      // final email = emailController.text.trim();
-      // final password = passwordController.text;
-      // final response = await AuthService.signUp(name, email, password);
-      
+      isLoading(true);
+      final response = await api.post("/register/", {
+        "full_name": name,
+        "email": email,
+        "password": password,
+        "confirm_password": confirmPassword,
+      });
+      print("Register Response==========>>>>>>$response");
       // Temporary: Remove this delay when implementing API
-      await Future.delayed(const Duration(seconds: 1));
-      Get.to(LoginScreen());
-      
-      // TODO: After successful API call, navigate to home or verification
-      // Get.offAllNamed('/home'); // Or '/verify-email'
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("Register Response==========>>>>>>$response");
+        Get.off(()=>OtpVerificationScreen());
+      } else {
+        return jsonDecode(response.body)['message'] ?? "Connection Error";
+      }
 
     } catch (e) {
       // Handle error

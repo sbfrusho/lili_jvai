@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_string_interpolations, deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -5,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:demo/utils/lilli_utils/common_page.dart';
 import 'package:demo/utils/lilli_utils/custon_bottom_navbar.dart';
 import 'package:demo/controllers/lilli_controllers/ai_submission_controller.dart';
-import 'package:demo/models/lilli_models/ai_submission_model.dart';
 import 'package:demo/views/screens/AI Screen/ai_update_screen.dart';
 
 class AiListScreen extends StatelessWidget {
@@ -55,7 +56,10 @@ class AiListScreen extends StatelessWidget {
                         return const Center(
                           child: Text(
                             "No Ai Translation yet",
-                            style: TextStyle(color: Colors.white70, fontSize: 14),
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 14,
+                            ),
                           ),
                         );
                       }
@@ -73,7 +77,9 @@ class AiListScreen extends StatelessWidget {
                             child: Container(
                               margin: const EdgeInsets.only(bottom: 10),
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 14),
+                                vertical: 12,
+                                horizontal: 14,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(0.08),
                                 borderRadius: BorderRadius.circular(10),
@@ -93,7 +99,8 @@ class AiListScreen extends StatelessWidget {
                                         /// --- Source Column ---
                                         Expanded(
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               const Text(
                                                 "Source",
@@ -118,7 +125,8 @@ class AiListScreen extends StatelessWidget {
                                         /// --- Known Column ---
                                         Expanded(
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               const Text(
                                                 "Known",
@@ -129,7 +137,9 @@ class AiListScreen extends StatelessWidget {
                                               ),
                                               const SizedBox(height: 4),
                                               Text(
-                                                item.known.isEmpty ? '-' : item.known,
+                                                item.known.isEmpty
+                                                    ? '-'
+                                                    : item.known,
                                                 style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 15,
@@ -151,7 +161,9 @@ class AiListScreen extends StatelessWidget {
                                     width: 1,
                                     height: 40,
                                     color: Colors.white.withOpacity(0.4),
-                                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                    ),
                                   ),
 
                                   /// --- Category & Delete Group ---
@@ -162,7 +174,8 @@ class AiListScreen extends StatelessWidget {
                                         /// --- Category Column ---
                                         Expanded(
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               const SizedBox(height: 4),
                                               Text(
@@ -187,8 +200,11 @@ class AiListScreen extends StatelessWidget {
                                           child: Container(
                                             padding: const EdgeInsets.all(6),
                                             decoration: BoxDecoration(
-                                              color: Colors.white.withOpacity(0.15),
-                                              borderRadius: BorderRadius.circular(8),
+                                              color: Colors.white.withOpacity(
+                                                0.15,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
                                             ),
                                             child: SvgPicture.asset(
                                               deleteIcon,
@@ -209,19 +225,14 @@ class AiListScreen extends StatelessWidget {
                       );
                     }),
                   ),
-                  SizedBox(height: 10,)
+                  SizedBox(height: 10),
                 ],
               ),
             ),
           ),
 
           /// BOTTOM NAV BAR
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: CustomBottomNavBar(),
-          ),
+          Positioned(left: 0, right: 0, bottom: 0, child: CustomBottomNavBar()),
         ],
       ),
     );

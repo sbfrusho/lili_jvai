@@ -4,7 +4,6 @@ import 'package:demo/controllers/lilli_controllers/change_password_controller.da
 import 'package:demo/utils/lilli_utils/common_page.dart';
 import 'package:demo/utils/lilli_utils/custom_text_field.dart';
 import 'package:demo/utils/lilli_utils/custom_button.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
   const ChangePasswordScreen({super.key});

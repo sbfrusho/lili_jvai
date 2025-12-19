@@ -1,3 +1,4 @@
+// ignore_for_file: depend_on_referenced_packages
 
 import 'dart:io';
 import 'dart:convert';
@@ -9,7 +10,7 @@ import '../utils/custom_snackbar.dart';
 import 'shared_prefs_service.dart';
 
 class ApiService {
-  final String devUrl = "";
+  final String devUrl = "http://10.10.12.35:8000/api";
   final String prodUrl = "";
   static final String imgUrl = "";
   final bool inDevelopment = true;
@@ -33,14 +34,12 @@ class ApiService {
   Future<Map<String, String>> _getHeaders(bool authReq) async {
     Map<String, String> headers = {'Content-Type': 'application/json'};
     if (authReq) {
-      // final token = await SharedPrefsService.get('token');
       final token = await SharedPrefsService.get('token');
       headers['Authorization'] = 'Bearer $token';
     }
     return headers;
   }
 
-  // Create
   Future<http.Response> post(
     String endpoint,
     Map<String, dynamic> data, {
@@ -93,7 +92,6 @@ class ApiService {
     }
   }
 
-  // Read
   Future<http.Response> get(
     String endpoint, {
     Map<String, dynamic>? queryParams,
@@ -116,7 +114,6 @@ class ApiService {
     }
   }
 
-  // Patch (Update)
   Future<http.Response> patch(
     String endpoint,
     Map<String, dynamic> data, {
