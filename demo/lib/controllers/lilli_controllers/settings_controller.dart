@@ -1,4 +1,5 @@
 import 'package:demo/controllers/lilli_controllers/login_controller.dart';
+import 'package:demo/services/shared_prefs_service.dart';
 import 'package:demo/views/screens/Authentication/login_screen.dart';
 import 'package:get/get.dart';
 
@@ -17,11 +18,14 @@ class SettingsController extends GetxController {
     // Navigate to login page
 
   // CLEAR LOGIN FIELDS
-  final loginCtrl = Get.find<LoginController>();
-  loginCtrl.emailController.clear();
-  loginCtrl.passwordController.clear();
-  loginCtrl.emailError.value = "";
-  loginCtrl.passwordError.value = "";
+
+  // final loginCtrl = Get.find<LoginController>();
+  // loginCtrl.emailController.clear();
+  // loginCtrl.passwordController.clear();
+  // loginCtrl.emailError.value = "";
+  // loginCtrl.passwordError.value = "";
+  SharedPrefsService.remove("accessToken");
+  SharedPrefsService.remove("refreshToken");
     Get.to(()=>LoginScreen(),transition: .noTransition,duration: Duration(seconds: 0));
   }
 }

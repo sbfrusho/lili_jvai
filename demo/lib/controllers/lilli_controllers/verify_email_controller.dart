@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:demo/services/api_service.dart';
+import 'package:demo/views/screens/Authentication/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -96,7 +98,7 @@ class VerifyEmailController extends GetxController {
     return true;
   }
 
-  Future<bool> verifyOtp() async {
+  Future<bool> verifyOtp(String email) async {
     if (!_validateOtp()) {
       return false;
     }
@@ -111,9 +113,21 @@ class VerifyEmailController extends GetxController {
       // Example:
       // final response = await AuthService.verifyOtp(email, otp);
       isLoading(true);
-      final response = await api.post("/otp/verify/", {});
+      final response = await api.post("/otp/verify/", {
+        "email": email,
+        "otp": otp,
+      });
 
       print("OTP Resopnse ================>>>>>>> ${response.toString()}");
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var resBody = json.decode(response.body);
+        print("OTP(email) Response==========>>>>>>$resBody");
+
+        Get.off(() => LoginScreen());
+      } else {
+        return jsonDecode(response.body)['message'] ?? "Connection Error";
+      }
 
       // Temporary: Remove this delay when implementing API
       await Future.delayed(const Duration(seconds: 1));
@@ -171,23 +185,32 @@ class VerifyEmailController extends GetxController {
   }
 
   // Resend OTP
-  Future<void> resendOtp() async {
+  Future<void> resendOtp(String email) async {
     if (!canResend.value) return;
 
     isLoading.value = true;
 
     try {
-      // TODO: Implement your resend API call here
-      // Example:
-      // await AuthService.resendOtp(email);
+      isLoading(true);
+      final response = await api.post("/otp/create/",{"email": email,});
 
-      // Temporary: Remove when implementing
+      print(
+        "RESEEND OTP Resopnse ================>>>>>>> ${response.toString()}",
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var resBody = json.decode(response.body);
+        print("OTP(email) Response==========>>>>>>$resBody");
+
+        // Get.off(() => LoginScreen());
+      } else {
+        return jsonDecode(response.body)['message'] ?? "Connection Error";
+      }
+
       await Future.delayed(const Duration(seconds: 1));
 
-      // Clear existing OTP
       clearOtp();
 
-      // Restart timer
       startResendTimer();
 
       Get.snackbar(

@@ -8,7 +8,8 @@ import 'package:demo/utils/lilli_utils/custom_button.dart';
 import 'package:get/get.dart';
 
 class OtpVerificationScreen extends StatelessWidget {
-  const OtpVerificationScreen({super.key});
+  final String? email;
+  const OtpVerificationScreen({super.key, this.email});
 
   @override
   Widget build(BuildContext context) {

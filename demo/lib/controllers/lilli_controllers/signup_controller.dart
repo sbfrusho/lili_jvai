@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:demo/models/lilli_models/register_response_model.dart';
 import 'package:demo/services/api_service.dart';
+import 'package:demo/views/screens/Authentication/email_verification_screen.dart';
 import 'package:demo/views/screens/Authentication/otp_verification.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -259,8 +261,11 @@ class SignUpController extends GetxController {
       print("Register Response==========>>>>>>$response");
       // Temporary: Remove this delay when implementing API
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print("Register Response==========>>>>>>$response");
-        Get.off(()=>OtpVerificationScreen());
+        var resBody = json.decode(response.body);
+        print("Register Response==========>>>>>>$resBody");
+
+        var userRes = RegisterResonseModel.fromJson(resBody);
+        Get.off(()=>EmailVerificationScreen(email: userRes.user?.email));
       } else {
         return jsonDecode(response.body)['message'] ?? "Connection Error";
       }

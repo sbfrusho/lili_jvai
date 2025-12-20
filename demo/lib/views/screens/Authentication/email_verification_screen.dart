@@ -10,7 +10,8 @@ import 'package:demo/utils/lilli_utils/custom_button.dart';
 import 'package:get/get.dart';
 
 class EmailVerificationScreen extends StatelessWidget {
-  const EmailVerificationScreen({super.key});
+  final String? email;
+  const EmailVerificationScreen({super.key, this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +159,9 @@ class EmailVerificationScreen extends StatelessWidget {
               if (controller.canResend.value) {
                 return Center(
                   child: TextButton(
-                    onPressed: controller.resendOtp,
+                    onPressed: ()async{
+                      await controller.resendOtp(email.toString());
+                    },
                     child: const Text(
                       "Didn't receive code? Resend",
                       style: TextStyle(
@@ -200,7 +203,7 @@ class EmailVerificationScreen extends StatelessWidget {
                 backgroundOpacity: 0.2,
                 onTap: controller.isButtonEnabled.value
                     ? () async {
-                        final success = await controller.verifyOtp();
+                        final success = await controller.verifyOtp(email.toString());
                         if (success) {
                           Get.off(() => const LoginScreen(), transition: .noTransition, duration: Duration(seconds: 0));
                         }

@@ -10,7 +10,7 @@ import '../utils/custom_snackbar.dart';
 import 'shared_prefs_service.dart';
 
 class ApiService {
-  final String devUrl = "http://10.10.12.35:8000/api";
+  final String devUrl = "http://10.10.12.35:8001/api";
   final String prodUrl = "";
   static final String imgUrl = "";
   final bool inDevelopment = true;

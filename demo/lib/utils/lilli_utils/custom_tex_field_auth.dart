@@ -41,11 +41,35 @@ class CustomTextFieldAuth extends StatefulWidget {
 
 class _CustomTextFieldAuthState extends State<CustomTextFieldAuth> {
   bool _obscureText = true;
+  TextEditingController? _internalController;
 
   @override
   void initState() {
     super.initState();
     _obscureText = widget.isPassword;
+    if (widget.controller == null) {
+      _internalController = TextEditingController();
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomTextFieldAuth oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller == null && widget.controller != null) {
+      // We used to own an internal controller, but an external one was provided — dispose ours.
+      _internalController?.dispose();
+      _internalController = null;
+    } else if (oldWidget.controller != null && widget.controller == null) {
+      // An external controller was removed; create an internal one to keep the widget functional.
+      _internalController = TextEditingController();
+    }
+  }
+
+  @override
+  void dispose() {
+    // Only dispose the controller we created internally.
+    _internalController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -92,7 +116,7 @@ class _CustomTextFieldAuthState extends State<CustomTextFieldAuth> {
           ],
           Expanded(
             child: TextField(
-              controller: widget.controller,
+              controller: widget.controller ?? _internalController,
               focusNode: widget.focusNode,
               onTap: widget.onTap,
               onChanged: widget.onChanged,

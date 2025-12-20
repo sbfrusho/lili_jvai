@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+import 'package:demo/models/lilli_models/login_response_model.dart';
+import 'package:demo/services/api_service.dart';
+import 'package:demo/services/shared_prefs_service.dart';
 import 'package:demo/views/screens/Home%20Screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +20,8 @@ class LoginController extends GetxController {
   // Form validation
   final RxString emailError = ''.obs;
   final RxString passwordError = ''.obs;
+  final api = ApiService();
+  var sharePrefs = SharedPrefsService();
 
   @override
   void onInit() {
@@ -103,17 +110,34 @@ class LoginController extends GetxController {
     isLoading.value = true;
 
     try {
-      // TODO: Implement your API call here
       // Example:
-      // final email = emailController.text.trim();
-      // final password = passwordController.text;
+      final email = emailController.text.trim();
+      final password = passwordController.text;
       // final response = await AuthService.login(email, password);
+
+
+      isLoading(true);
+      final response = await api.post("/login/", {
+        "email": email,
+        "password": password,
+      });
+      // print("Login Response==========>>>>>>$response");
+      // Temporary: Remove this delay when implementing API
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var resBody = json.decode(response.body);
+        // print("Login Response==========>>>>>>$resBody");
+        var loiginRes = LoginResponseModel.fromJson(resBody);
+        await SharedPrefsService.set("accessToken", loiginRes.accessToken);
+        await SharedPrefsService.set('refreshToken ', loiginRes.refreshToken);
+
+        Get.off(()=>HomeScreen());
+      } else {
+        return jsonDecode(response.body)['message'] ?? "Connection Error";
+      }
       
       // Temporary: Remove this delay when implementing API
       await Future.delayed(const Duration(seconds: 1));
-      Get.to(HomeScreen());
-      
-      // TODO: After successful API call, navigate to home
+      Get.to(()=>HomeScreen(),transition: .noTransition,duration: Duration(seconds: 0));
       // Get.offAllNamed('/home');
 
     } catch (e) {
