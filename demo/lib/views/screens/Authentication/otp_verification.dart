@@ -16,6 +16,12 @@ class OtpVerificationScreen extends StatelessWidget {
     // Initialize controller
     final controller = Get.put(OtpVerificationController());
     
+    // Set email and update masked email
+    if (email != null && email!.isNotEmpty) {
+      controller.setEmail(email!);
+      controller.maskedEmail.value = controller.getMaskedEmail();
+    }
+    
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final horizontalPadding = screenWidth * 0.05;
@@ -60,10 +66,10 @@ class OtpVerificationScreen extends StatelessWidget {
             
             // Dynamic subtitle with masked email
             Obx(() {
-              final email = controller.maskedEmail.value; // Use observable directly
+              final maskedEmail = controller.maskedEmail.value;
               return Text(
-                email.isNotEmpty
-                    ? "Enter the 6-digit code sent to $email"
+                maskedEmail.isNotEmpty
+                    ? "Enter the 6-digit code sent to $maskedEmail"
                     : "Enter the 6-digit code sent to your email",
                 style: TextStyle(
                   fontSize: screenWidth * 0.04,
@@ -206,7 +212,12 @@ class OtpVerificationScreen extends StatelessWidget {
                     ? () async {
                         final success = await controller.verifyOtp();
                         if (success) {
-                          Get.to(() => const NewPasswordScreen(), transition: .noTransition, duration: Duration(seconds: 0));
+                          Get.snackbar("Success", "OTP verification done", colorText: Colors.green);
+                          Get.to(
+                            () => const NewPasswordScreen(),
+                            transition: Transition.noTransition,
+                            duration: const Duration(seconds: 0),
+                          );
                         }
                       }
                     : null,

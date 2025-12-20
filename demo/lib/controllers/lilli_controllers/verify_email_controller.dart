@@ -209,9 +209,11 @@ class VerifyEmailController extends GetxController {
 
       await Future.delayed(const Duration(seconds: 1));
 
-      clearOtp();
-
-      startResendTimer();
+      // Check if controller is still valid before updating state
+      if (!isClosed) {
+        clearOtp();
+        startResendTimer();
+      }
 
       Get.snackbar(
         'Success',
@@ -233,7 +235,9 @@ class VerifyEmailController extends GetxController {
         icon: const Icon(Icons.error, color: Colors.white),
       );
     } finally {
-      isLoading.value = false;
+      if (!isClosed) {
+        isLoading.value = false;
+      }
     }
   }
 

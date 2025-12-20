@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:demo/services/api_service.dart';
+import 'package:demo/views/screens/Authentication/otp_verification.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,7 +13,8 @@ class ForgotPasswordController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxBool isButtonEnabled = false.obs;
   final RxString emailError = ''.obs;
-  final RxString enteredEmail = ''.obs; // Store email for OTP screen
+  final RxString enteredEmail = ''.obs;
+  final api = ApiService();
 
   @override
   void onInit() {
@@ -28,12 +33,12 @@ class ForgotPasswordController extends GetxController {
   // Listen to email changes
   void _onEmailChanged() {
     final email = emailController.text.trim();
-    
+
     // Clear error when user starts typing
     if (emailError.value.isNotEmpty) {
       emailError.value = '';
     }
-    
+
     // Enable button if email is not empty
     isButtonEnabled.value = email.isNotEmpty;
   }
@@ -41,17 +46,17 @@ class ForgotPasswordController extends GetxController {
   // Validate email
   bool _validateEmail() {
     final email = emailController.text.trim();
-    
+
     if (email.isEmpty) {
       emailError.value = 'Email is required';
       return false;
     }
-    
+
     if (!GetUtils.isEmail(email)) {
       emailError.value = 'Please enter a valid email address';
       return false;
     }
-    
+
     emailError.value = '';
     return true;
   }
@@ -68,82 +73,115 @@ class ForgotPasswordController extends GetxController {
 
     try {
       final email = emailController.text.trim();
-      
-      // Store email for OTP verification screen
+
       enteredEmail.value = email;
-
-      // TODO: Implement your API call here
-      // Example:
-      // final response = await AuthService.sendPasswordResetCode(email);
-      
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 2));
-
-      // Success
-      Get.snackbar(
-        'Success',
-        'Verification code sent to $email',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 2),
-        icon: const Icon(Icons.check_circle, color: Colors.white),
-      );
-
-      return true;
-
+      isLoading(true);
+      final response = await api.post("/password-reset/request/", {
+        "email": email,
+      });
+      print("Forgot Password Request Response==========>>>>>>$response");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var resBody = json.decode(response.body);
+        print("Forgot Password Request Response==========>>>>>>$resBody");
+        
+        // Check if controller is still open before navigating
+        if (!isClosed) {
+          Get.off(() => OtpVerificationScreen(), transition: .noTransition);
+        }
+        return true;
+      } else {
+        if (!isClosed) {
+          var errorMsg = jsonDecode(response.body)['message'] ?? "Connection Error";
+          Get.snackbar(
+            'Error',
+            errorMsg,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 3),
+            icon: const Icon(Icons.error, color: Colors.white),
+          );
+        }
+        return false;
+      }
     } catch (e) {
       // Handle error
-      Get.snackbar(
-        'Error',
-        'Failed to send code: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 3),
-        icon: const Icon(Icons.error, color: Colors.white),
-      );
-      
-      return false;
+      if (!isClosed) {
+        Get.snackbar(
+          'Error',
+          'Failed to send code: ${e.toString()}',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 3),
+          icon: const Icon(Icons.error, color: Colors.white),
+        );
+      }
 
+      return false;
     } finally {
       // Stop loading
-      isLoading.value = false;
+      if (!isClosed) {
+        isLoading.value = false;
+      }
     }
   }
 
   // Resend code (for OTP screen)
   Future<void> resendCode() async {
     isLoading.value = true;
-    
+
     try {
-      final email = enteredEmail.value.isNotEmpty 
-          ? enteredEmail.value 
+      final email = enteredEmail.value.isNotEmpty
+          ? enteredEmail.value
           : emailController.text.trim();
 
-      // TODO: Implement resend API call
-      await Future.delayed(const Duration(seconds: 2));
+      // Call API to resend code
+      final response = await api.post("/password-reset/request/", {
+        "email": email,
+      });
 
-      Get.snackbar(
-        'Success',
-        'Verification code resent to $email',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 2),
-      );
-
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        if (!isClosed) {
+          Get.snackbar(
+            'Success',
+            'Verification code resent to $email',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 2),
+            icon: const Icon(Icons.check_circle, color: Colors.white),
+          );
+        }
+      } else {
+        if (!isClosed) {
+          Get.snackbar(
+            'Error',
+            'Failed to resend code',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 3),
+            icon: const Icon(Icons.error, color: Colors.white),
+          );
+        }
+      }
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Failed to resend code: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 3),
-      );
+      if (!isClosed) {
+        Get.snackbar(
+          'Error',
+          'Failed to resend code: ${e.toString()}',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 3),
+          icon: const Icon(Icons.error, color: Colors.white),
+        );
+      }
     } finally {
-      isLoading.value = false;
+      if (!isClosed) {
+        isLoading.value = false;
+      }
     }
   }
 
@@ -161,8 +199,8 @@ class ForgotPasswordController extends GetxController {
 
   // Get stored email (useful for OTP screen)
   String getEmail() {
-    return enteredEmail.value.isNotEmpty 
-        ? enteredEmail.value 
+    return enteredEmail.value.isNotEmpty
+        ? enteredEmail.value
         : emailController.text.trim();
   }
 }

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../services/api_service.dart';
 import '../../services/shared_prefs_service.dart';
 import '../user_controller.dart';
+import 'login_controller.dart';
 
 class AuthController extends GetxController {
   RxBool isLoggedIn = false.obs;
@@ -147,6 +148,12 @@ class AuthController extends GetxController {
 
   Future<void> logout() async {
     await SharedPrefsService.clear();
+    // Clear login/signup fields
+    try {
+      Get.find<LoginController>().clearFields();
+    } catch (e) {
+      // Controller not initialized yet
+    }
     // Get.offAll(() => Signin());
     isLoggedIn.value = false;
   }

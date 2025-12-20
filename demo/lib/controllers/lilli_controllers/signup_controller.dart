@@ -213,14 +213,6 @@ class SignUpController extends GetxController {
   bool _validateTerms() {
     if (!agreeTerms.value) {
       termsError.value = 'You must agree to the terms';
-      Get.snackbar(
-        'Terms Required',
-        'Please agree to Terms of Service and Privacy Policy',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 2),
-      );
       return false;
     }
     termsError.value = '';
@@ -265,24 +257,32 @@ class SignUpController extends GetxController {
         print("Register Response==========>>>>>>$resBody");
 
         var userRes = RegisterResonseModel.fromJson(resBody);
-        Get.off(()=>EmailVerificationScreen(email: userRes.user?.email));
+        if (!isClosed) {
+          Get.off(()=>EmailVerificationScreen(email: userRes.user?.email));
+        }
       } else {
-        return jsonDecode(response.body)['message'] ?? "Connection Error";
+        if (!isClosed) {
+          return jsonDecode(response.body)['message'] ?? "Connection Error";
+        }
       }
 
     } catch (e) {
       // Handle error
-      Get.snackbar(
-        'Error',
-        'Sign up failed: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.white.withOpacity(0.08),
-        colorText: Colors.white,
-        duration: const Duration(seconds: 3),
-      );
+      if (!isClosed) {
+        Get.snackbar(
+          'Error',
+          'Sign up failed: ${e.toString()}',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.white.withOpacity(0.08),
+          colorText: Colors.white,
+          duration: const Duration(seconds: 3),
+        );
+      }
     } finally {
       // Stop loading
-      isLoading.value = false;
+      if (!isClosed) {
+        isLoading.value = false;
+      }
     }
   }
 

@@ -1,6 +1,8 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:async';
+import 'dart:convert';
+import 'package:demo/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,27 +17,28 @@ class OtpVerificationController extends GetxController {
   final RxString otpError = ''.obs;
   final RxInt resendTimer = 60.obs;
   final RxBool canResend = false.obs;
-  final RxString maskedEmail = ''.obs; // Observable masked email
-  
+  final RxString maskedEmail = ''.obs;
+  final api = ApiService();
+
   Timer? _timer;
-  String? email; // Email from previous screen
+  String? email;
 
   @override
   void onInit() {
     super.onInit();
-    
+
     // Initialize controllers and focus nodes
     otpControllers = List.generate(6, (_) => TextEditingController());
     focusNodes = List.generate(6, (_) => FocusNode());
-    
+
     // Add listeners to all OTP fields
     for (int i = 0; i < 6; i++) {
       otpControllers[i].addListener(() => _onOtpChanged(i));
     }
-    
+
     // Start resend timer
     startResendTimer();
-    
+
     // Auto-focus first field
     WidgetsBinding.instance.addPostFrameCallback((_) {
       focusNodes[0].requestFocus();
@@ -58,17 +61,17 @@ class OtpVerificationController extends GetxController {
   // Handle OTP input changes
   void _onOtpChanged(int index) {
     final text = otpControllers[index].text;
-    
+
     // Clear error when user types
     if (otpError.value.isNotEmpty) {
       otpError.value = '';
     }
-    
+
     // Move to next field if current field has value
     if (text.isNotEmpty && index < 5) {
       focusNodes[index + 1].requestFocus();
     }
-    
+
     // Check if all fields are filled
     _checkOtpComplete();
   }
@@ -82,7 +85,9 @@ class OtpVerificationController extends GetxController {
 
   // Check if OTP is complete
   void _checkOtpComplete() {
-    bool allFilled = otpControllers.every((controller) => controller.text.isNotEmpty);
+    bool allFilled = otpControllers.every(
+      (controller) => controller.text.isNotEmpty,
+    );
     isButtonEnabled.value = allFilled;
   }
 
@@ -94,23 +99,38 @@ class OtpVerificationController extends GetxController {
   // Validate OTP
   bool _validateOtp() {
     final otp = getOtpCode();
-    
+
     if (otp.length != 6) {
       otpError.value = 'Please enter complete 6-digit code';
       return false;
     }
-    
+
     if (!RegExp(r'^[0-9]+$').hasMatch(otp)) {
       otpError.value = 'OTP must contain only numbers';
       return false;
     }
-    
+
     otpError.value = '';
     return true;
   }
 
   // Verify OTP
   Future<bool> verifyOtp() async {
+    // Check if email is set
+    if (email == null || email!.isEmpty) {
+      otpError.value = 'Email not found. Please try again.';
+      Get.snackbar(
+        'Error',
+        'Email not found. Please go back and try again.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+        icon: const Icon(Icons.error, color: Colors.white),
+      );
+      return false;
+    }
+
     // Validate OTP first
     if (!_validateOtp()) {
       return false;
@@ -121,49 +141,86 @@ class OtpVerificationController extends GetxController {
 
     try {
       final otp = getOtpCode();
+
+      print("Email being sent: $email");
+      print("OTP being sent: $otp");
+
+      final response = await api.post("/reset/otp-verify/", {
+        "email": email,
+        "otp": otp,
+      });
       
-      // TODO: Implement your API call here
-      // Example:
-      // final response = await AuthService.verifyOtp(email, otp);
+      print("OTP Verify Request Response==========>>>>>>$response");
       
-      // Temporary: Remove this delay when implementing API
-      await Future.delayed(const Duration(seconds: 1));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var resBody = json.decode(response.body);
+        print("OTP Verify Response Body==========>>>>>>$resBody");
 
-      // Success message
-      Get.snackbar(
-        'Success',
-        'OTP verified successfully!',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 2),
-        icon: const Icon(Icons.check_circle, color: Colors.white),
-      );
+        await Future.delayed(const Duration(seconds: 1));
 
-      return true;
-
+        // Success message
+        if (!isClosed) {
+          Get.snackbar(
+            'Success',
+            'OTP verified successfully!',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 2),
+            icon: const Icon(Icons.check_circle, color: Colors.white),
+          );
+        }
+        return true;
+      } else {
+        // Handle error response
+        var errorBody = jsonDecode(response.body);
+        String errorMsg = errorBody['message'] ?? "Verification failed";
+        
+        // Check for specific error in details
+        if (errorBody['details'] != null && errorBody['details']['email'] != null) {
+          errorMsg = errorBody['details']['email'][0];
+        }
+        
+        otpError.value = errorMsg;
+        
+        if (!isClosed) {
+          Get.snackbar(
+            'Error',
+            errorMsg,
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 3),
+            icon: const Icon(Icons.error, color: Colors.white),
+          );
+        }
+        return false;
+      }
     } catch (e) {
       // Handle error
       otpError.value = 'Invalid OTP code. Please try again.';
-      
-      Get.snackbar(
-        'Error',
-        'OTP verification failed: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 3),
-        icon: const Icon(Icons.error, color: Colors.white),
-      );
-      
+
+      if (!isClosed) {
+        Get.snackbar(
+          'Error',
+          'OTP verification failed: ${e.toString()}',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 3),
+          icon: const Icon(Icons.error, color: Colors.white),
+        );
+      }
+
       // Clear OTP fields on error
       clearOtp();
-      
-      return false;
 
+      return false;
     } finally {
       // Stop loading
-      isLoading.value = false;
+      if (!isClosed) {
+        isLoading.value = false;
+      }
     }
   }
 
@@ -171,7 +228,7 @@ class OtpVerificationController extends GetxController {
   void startResendTimer() {
     canResend.value = false;
     resendTimer.value = 60;
-    
+
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (resendTimer.value > 0) {
@@ -186,45 +243,75 @@ class OtpVerificationController extends GetxController {
   // Resend OTP
   Future<void> resendOtp() async {
     if (!canResend.value) return;
-
-    isLoading.value = true;
-
-    try {
-      // TODO: Implement your resend API call here
-      // Example:
-      // await AuthService.resendOtp(email);
-      
-      // Temporary: Remove when implementing
-      await Future.delayed(const Duration(seconds: 1));
-
-      // Clear existing OTP
-      clearOtp();
-      
-      // Restart timer
-      startResendTimer();
-
-      Get.snackbar(
-        'Success',
-        'OTP code resent successfully!',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 2),
-        icon: const Icon(Icons.check_circle, color: Colors.white),
-      );
-
-    } catch (e) {
+    if (email == null || email!.isEmpty) {
       Get.snackbar(
         'Error',
-        'Failed to resend OTP: ${e.toString()}',
+        'Email not set. Please try again.',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
         duration: const Duration(seconds: 3),
         icon: const Icon(Icons.error, color: Colors.white),
       );
+      return;
+    }
+
+    isLoading.value = true;
+
+    try {
+      // Call API to resend OTP
+      final response = await api.post("/otp/create/", {"email": email});
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var resBody = json.decode(response.body);
+        print("Resend OTP Response==========>>>>>>$resBody");
+
+        // Clear existing OTP
+        clearOtp();
+
+        // Restart timer
+        startResendTimer();
+
+        if (!isClosed) {
+          Get.snackbar(
+            'Success',
+            'OTP code resent successfully!',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 2),
+            icon: const Icon(Icons.check_circle, color: Colors.white),
+          );
+        }
+      } else {
+        if (!isClosed) {
+          Get.snackbar(
+            'Error',
+            'Failed to resend OTP',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+            duration: const Duration(seconds: 3),
+            icon: const Icon(Icons.error, color: Colors.white),
+          );
+        }
+      }
+    } catch (e) {
+      if (!isClosed) {
+        Get.snackbar(
+          'Error',
+          'Failed to resend OTP: ${e.toString()}',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 3),
+          icon: const Icon(Icons.error, color: Colors.white),
+        );
+      }
     } finally {
-      isLoading.value = false;
+      if (!isClosed) {
+        isLoading.value = false;
+      }
     }
   }
 
@@ -241,22 +328,23 @@ class OtpVerificationController extends GetxController {
   // Set email from previous screen
   void setEmail(String userEmail) {
     email = userEmail;
+    print("Email set in controller: $email");
   }
 
   // Get masked email for display (e.g., "j***@gmail.com")
   String getMaskedEmail() {
     if (email == null || email!.isEmpty) return '';
-    
+
     final parts = email!.split('@');
     if (parts.length != 2) return email!;
-    
+
     final username = parts[0];
     final domain = parts[1];
-    
+
     if (username.length <= 2) {
       return '${username[0]}***@$domain';
     }
-    
+
     return '${username[0]}${'*' * (username.length - 2)}${username[username.length - 1]}@$domain';
   }
 
@@ -264,14 +352,14 @@ class OtpVerificationController extends GetxController {
   void pasteOtp(String text) {
     // Extract only digits
     final digits = text.replaceAll(RegExp(r'[^0-9]'), '');
-    
+
     if (digits.isEmpty) return;
-    
+
     // Fill OTP fields
     for (int i = 0; i < 6 && i < digits.length; i++) {
       otpControllers[i].text = digits[i];
     }
-    
+
     // Focus last filled field
     final lastIndex = digits.length > 6 ? 5 : digits.length - 1;
     if (lastIndex >= 0 && lastIndex < 6) {

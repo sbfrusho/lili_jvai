@@ -20,6 +20,7 @@ class ForgotPasswordScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final horizontalPadding = screenWidth * 0.05;
     final verticalSpacing = screenHeight * 0.02;
+    final String? email;
 
     return CommonPage(
       child: Padding(
@@ -115,8 +116,9 @@ class ForgotPasswordScreen extends StatelessWidget {
                           // Pass email to OTP controller
                           final otpController = Get.put(OtpVerificationController());
                           otpController.setEmail(controller.getEmail());
+                          print("------forgot password email: ${controller.emailController.text}");
                           
-                          Get.to(() => const OtpVerificationScreen(), transition: .noTransition, duration: Duration(seconds: 0));
+                          Get.to(() => OtpVerificationScreen(email: controller.emailController.text,), transition: .noTransition, duration: Duration(seconds: 0));
                         }
                       }
                     : null,
