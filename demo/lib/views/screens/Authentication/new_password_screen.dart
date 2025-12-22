@@ -7,7 +7,9 @@ import 'package:demo/utils/lilli_utils/custom_button.dart';
 import 'package:get/get.dart';
 
 class NewPasswordScreen extends StatefulWidget {
-  const NewPasswordScreen({super.key});
+  final String? email;
+  final String? otp;
+  const NewPasswordScreen({super.key, this.email, this.otp});
 
   @override
   State<NewPasswordScreen> createState() => _NewPasswordScreenState();
@@ -41,6 +43,15 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   Widget build(BuildContext context) {
     // Initialize controller
     final controller = Get.put(NewPasswordController());
+    
+    // Set email and OTP if provided
+    if (widget.email != null && widget.email!.isNotEmpty) {
+      if (widget.otp != null && widget.otp!.isNotEmpty) {
+        controller.setEmailAndOtp(widget.email!, widget.otp!);
+      } else {
+        controller.setEmail(widget.email!);
+      }
+    }
 
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -96,7 +107,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
             SizedBox(height: verticalSpacing * 2),
 
             // New Password Field
-            CustomTextFieldAuth (
+            CustomTextFieldAuth(
               controller: controller.newPasswordController,
               label: "Enter new password",
               prefixSvg: "assets/icons/lock.svg",
@@ -220,7 +231,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
             const SizedBox(height: 12),
 
             // Confirm Password Field
-            CustomTextFieldAuth (
+            CustomTextFieldAuth(
               controller: controller.confirmPasswordController,
               label: "Confirm password",
               prefixSvg: "assets/icons/lock.svg",
@@ -267,8 +278,8 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   Expanded(
                     child: Text(
                       controller.passwordsMatch.value
-                          ? "Passwords match "
-                          : "Passwords match",
+                          ? "Passwords match"
+                          : "Passwords do not match",
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 14,

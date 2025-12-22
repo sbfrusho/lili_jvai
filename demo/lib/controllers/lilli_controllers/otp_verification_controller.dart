@@ -2,7 +2,9 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:demo/services/api_service.dart';
+import 'package:demo/views/screens/Authentication/new_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -119,15 +121,7 @@ class OtpVerificationController extends GetxController {
     // Check if email is set
     if (email == null || email!.isEmpty) {
       otpError.value = 'Email not found. Please try again.';
-      Get.snackbar(
-        'Error',
-        'Email not found. Please go back and try again.',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 3),
-        icon: const Icon(Icons.error, color: Colors.white),
-      );
+      _showErrorSnackbar('Error', 'Email not found. Please go back and try again.');
       return false;
     }
 
@@ -149,72 +143,97 @@ class OtpVerificationController extends GetxController {
         "email": email,
         "otp": otp,
       });
-      
-      print("OTP Verify Request Response==========>>>>>>$response");
-      
+
+      print("OTP Verify Request Response==========>>>>>>Status: ${response.statusCode}");
+      print("OTP Verify Request Response==========>>>>>>Body: ${response.body}");
+
       if (response.statusCode == 200 || response.statusCode == 201) {
-        var resBody = json.decode(response.body);
-        print("OTP Verify Response Body==========>>>>>>$resBody");
+        // Parse response safely
+        try {
+          var resBody = json.decode(response.body);
+          print("OTP Verify Response Body==========>>>>>>$resBody");
 
-        await Future.delayed(const Duration(seconds: 1));
-
-        // Success message
-        if (!isClosed) {
-          Get.snackbar(
-            'Success',
-            'OTP verified successfully!',
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-            duration: const Duration(seconds: 2),
-            icon: const Icon(Icons.check_circle, color: Colors.white),
-          );
+          // Navigate to new password screen
+          await Future.delayed(const Duration(seconds: 1));
+          
+          if (!isClosed) {
+            Get.off(() => NewPasswordScreen(email: email, otp: otp));
+            
+            // Success message
+            Get.snackbar(
+              'Success',
+              'OTP verified successfully!',
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+              duration: const Duration(seconds: 2),
+              icon: const Icon(Icons.check_circle, color: Colors.white),
+            );
+          }
+          
+          return true;
+        } catch (e) {
+          print("JSON parsing error: $e");
+          _showErrorSnackbar('Error', 'Invalid response from server');
+          return false;
         }
-        return true;
       } else {
         // Handle error response
-        var errorBody = jsonDecode(response.body);
-        String errorMsg = errorBody['message'] ?? "Verification failed";
+        String errorMsg = "Verification failed";
         
-        // Check for specific error in details
-        if (errorBody['details'] != null && errorBody['details']['email'] != null) {
-          errorMsg = errorBody['details']['email'][0];
+        try {
+          var errorBody = jsonDecode(response.body);
+          
+          // Try to extract error message safely
+          if (errorBody is Map) {
+            if (errorBody['message'] != null) {
+              errorMsg = errorBody['message'].toString();
+            } else if (errorBody['error'] != null) {
+              errorMsg = errorBody['error'].toString();
+            }
+            
+            // Check for nested details
+            if (errorBody['details'] != null && errorBody['details'] is Map) {
+              final details = errorBody['details'] as Map;
+              if (details['email'] != null && details['email'] is List) {
+                final emailErrors = details['email'] as List;
+                if (emailErrors.isNotEmpty) {
+                  errorMsg = emailErrors[0].toString();
+                }
+              } else if (details['otp'] != null && details['otp'] is List) {
+                final otpErrors = details['otp'] as List;
+                if (otpErrors.isNotEmpty) {
+                  errorMsg = otpErrors[0].toString();
+                }
+              }
+            }
+          }
+        } catch (e) {
+          print("Error parsing error response: $e");
         }
-        
+
         otpError.value = errorMsg;
-        
-        if (!isClosed) {
-          Get.snackbar(
-            'Error',
-            errorMsg,
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.red,
-            colorText: Colors.white,
-            duration: const Duration(seconds: 3),
-            icon: const Icon(Icons.error, color: Colors.white),
-          );
-        }
+        _showErrorSnackbar('Error', errorMsg);
         return false;
       }
+    } on SocketException {
+      // No internet connection
+      otpError.value = 'No internet connection';
+      _showErrorSnackbar('Connection Error', 'Please check your internet connection');
+      return false;
+    } on TimeoutException {
+      // Request timeout
+      otpError.value = 'Request timeout';
+      _showErrorSnackbar('Timeout', 'Request took too long. Please try again');
+      return false;
     } catch (e) {
-      // Handle error
+      // Handle any other error
+      print("OTP verification error: $e");
       otpError.value = 'Invalid OTP code. Please try again.';
-
-      if (!isClosed) {
-        Get.snackbar(
-          'Error',
-          'OTP verification failed: ${e.toString()}',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 3),
-          icon: const Icon(Icons.error, color: Colors.white),
-        );
-      }
-
+      _showErrorSnackbar('Error', 'OTP verification failed: ${e.toString()}');
+      
       // Clear OTP fields on error
       clearOtp();
-
       return false;
     } finally {
       // Stop loading
@@ -244,15 +263,7 @@ class OtpVerificationController extends GetxController {
   Future<void> resendOtp() async {
     if (!canResend.value) return;
     if (email == null || email!.isEmpty) {
-      Get.snackbar(
-        'Error',
-        'Email not set. Please try again.',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 3),
-        icon: const Icon(Icons.error, color: Colors.white),
-      );
+      _showErrorSnackbar('Error', 'Email not set. Please try again.');
       return;
     }
 
@@ -260,54 +271,62 @@ class OtpVerificationController extends GetxController {
 
     try {
       // Call API to resend OTP
-      final response = await api.post("/otp/create/", {"email": email});
+      // NOTE: Verify this endpoint with your backend
+      // It might be /reset/otp-resend/ or /reset/otp-create/ for password reset flow
+      final response = await api.post("/reset/otp-create/", {"email": email});
+
+      print("Resend OTP Response==========>>>>>>Status: ${response.statusCode}");
+      print("Resend OTP Response==========>>>>>>Body: ${response.body}");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        var resBody = json.decode(response.body);
-        print("Resend OTP Response==========>>>>>>$resBody");
+        try {
+          var resBody = json.decode(response.body);
+          print("Resend OTP Response Body==========>>>>>>$resBody");
 
-        // Clear existing OTP
-        clearOtp();
+          // Clear existing OTP
+          clearOtp();
 
-        // Restart timer
-        startResendTimer();
+          // Restart timer
+          startResendTimer();
 
-        if (!isClosed) {
-          Get.snackbar(
-            'Success',
-            'OTP code resent successfully!',
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-            duration: const Duration(seconds: 2),
-            icon: const Icon(Icons.check_circle, color: Colors.white),
-          );
+          if (!isClosed) {
+            Get.snackbar(
+              'Success',
+              'OTP code resent successfully!',
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+              duration: const Duration(seconds: 2),
+              icon: const Icon(Icons.check_circle, color: Colors.white),
+            );
+          }
+        } catch (e) {
+          print("JSON parsing error: $e");
+          _showErrorSnackbar('Error', 'Invalid response from server');
         }
       } else {
-        if (!isClosed) {
-          Get.snackbar(
-            'Error',
-            'Failed to resend OTP',
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.red,
-            colorText: Colors.white,
-            duration: const Duration(seconds: 3),
-            icon: const Icon(Icons.error, color: Colors.white),
-          );
+        String errorMsg = 'Failed to resend OTP';
+        
+        try {
+          var errorBody = jsonDecode(response.body);
+          if (errorBody is Map && errorBody['message'] != null) {
+            errorMsg = errorBody['message'].toString();
+          } else if (errorBody is Map && errorBody['error'] != null) {
+            errorMsg = errorBody['error'].toString();
+          }
+        } catch (e) {
+          print("Error parsing error response: $e");
         }
+        
+        _showErrorSnackbar('Error', errorMsg);
       }
+    } on SocketException {
+      _showErrorSnackbar('Connection Error', 'Please check your internet connection');
+    } on TimeoutException {
+      _showErrorSnackbar('Timeout', 'Request took too long. Please try again');
     } catch (e) {
-      if (!isClosed) {
-        Get.snackbar(
-          'Error',
-          'Failed to resend OTP: ${e.toString()}',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 3),
-          icon: const Icon(Icons.error, color: Colors.white),
-        );
-      }
+      print("Resend OTP error: $e");
+      _showErrorSnackbar('Error', 'Failed to resend OTP: ${e.toString()}');
     } finally {
       if (!isClosed) {
         isLoading.value = false;
@@ -364,6 +383,21 @@ class OtpVerificationController extends GetxController {
     final lastIndex = digits.length > 6 ? 5 : digits.length - 1;
     if (lastIndex >= 0 && lastIndex < 6) {
       focusNodes[lastIndex].requestFocus();
+    }
+  }
+
+  // Helper method to show error snackbar
+  void _showErrorSnackbar(String title, String message) {
+    if (!isClosed) {
+      Get.snackbar(
+        title,
+        message,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+        icon: const Icon(Icons.error, color: Colors.white),
+      );
     }
   }
 }

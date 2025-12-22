@@ -1,4 +1,9 @@
+import 'dart:convert';
+import 'dart:async';
+import 'dart:io';
+import 'package:demo/services/api_service.dart';
 import 'package:demo/views/screens/Authentication/login_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,8 +18,8 @@ class NewPasswordController extends GetxController {
   final RxBool isPasswordValid = false.obs;
   final RxString newPasswordError = ''.obs;
   final RxString confirmPasswordError = ''.obs;
-  final RxString currentNewPassword = ''.obs; // Track new password changes
-  final RxString currentConfirmPassword = ''.obs; // Track confirm password changes
+  final RxString currentNewPassword = ''.obs;
+  final RxString currentConfirmPassword = ''.obs;
 
   // Password strength
   final RxDouble passwordStrength = 0.0.obs;
@@ -26,6 +31,11 @@ class NewPasswordController extends GetxController {
   final RxBool hasLowercase = false.obs;
   final RxBool hasNumber = false.obs;
   final RxBool hasSpecialChar = false.obs;
+
+  // Email and OTP from previous screens
+  String? email;
+  String? otp;
+  final api = ApiService();
 
   @override
   void onInit() {
@@ -44,12 +54,35 @@ class NewPasswordController extends GetxController {
     super.onClose();
   }
 
+  // Set email and OTP from previous screens
+  void setEmail(String userEmail) {
+    email = userEmail;
+    if (kDebugMode) {
+      print("Email set in NewPasswordController: $email");
+    }
+  }
+
+  void setOtp(String userOtp) {
+    otp = userOtp;
+    if (kDebugMode) {
+      print("OTP set in NewPasswordController: $otp");
+    }
+  }
+
+  void setEmailAndOtp(String userEmail, String userOtp) {
+    email = userEmail;
+    otp = userOtp;
+    if (kDebugMode) {
+      print("Email and OTP set in NewPasswordController - Email: $email, OTP: $otp");
+    }
+  }
+
   // Handle new password changes
   void _onNewPasswordChanged() {
     _checkPasswordRequirements();
     _checkPasswordStrength();
     _validatePasswords();
-    currentNewPassword.value = newPasswordController.text; // Update observable
+    currentNewPassword.value = newPasswordController.text;
     
     // Clear error when typing
     if (newPasswordError.value.isNotEmpty) {
@@ -60,7 +93,7 @@ class NewPasswordController extends GetxController {
   // Handle confirm password changes
   void _onConfirmPasswordChanged() {
     _validatePasswords();
-    currentConfirmPassword.value = confirmPasswordController.text; // Update observable
+    currentConfirmPassword.value = confirmPasswordController.text;
     
     // Clear error when typing
     if (confirmPasswordError.value.isNotEmpty) {
@@ -195,6 +228,23 @@ class NewPasswordController extends GetxController {
 
   // Update password
   Future<bool> updatePassword() async {
+    // Check if email and OTP are set
+    if (email == null || email!.isEmpty) {
+      _showErrorSnackbar(
+        'Error',
+        'Email not found. Please try again from the beginning.',
+      );
+      return false;
+    }
+
+    if (otp == null || otp!.isEmpty) {
+      _showErrorSnackbar(
+        'Error',
+        'OTP not found. Please verify OTP again.',
+      );
+      return false;
+    }
+
     // Validate form
     if (!_validateForm()) {
       return false;
@@ -204,49 +254,151 @@ class NewPasswordController extends GetxController {
     isLoading.value = true;
 
     try {
-      // TODO: Implement your API call here
-      // Example:
-      // final newPassword = newPasswordController.text;
-      // final response = await AuthService.resetPassword(otp, newPassword);
-      
-      // Temporary: Remove this delay when implementing API
-      await Future.delayed(const Duration(seconds: 1));
-      Get.to(LoginScreen(), transition: .noTransition, duration: Duration(seconds: 0));
+      final newPassword = newPasswordController.text;
+      final confirmPassword = confirmPasswordController.text;
 
-      // Success message
-      Get.snackbar(
-        'Success',
-        'Password updated successfully!',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 2),
-        icon: const Icon(Icons.check_circle, color: Colors.white),
+      if (kDebugMode) {
+        print("Updating password for email: $email");
+        print("Using OTP: $otp");
+      }
+
+      // Call API to update password
+      // NOTE: Verify with your backend if they need both new_password and confirm_password
+      // Some backends only need new_password or password
+      final response = await api.post("/password-reset/confirm/", {
+        "email": email,
+        "otp": otp,
+        "new_password": newPassword,
+        "confirm_password": confirmPassword,
+      });
+
+      if (kDebugMode) {
+        print("Password Update Response Status: ${response.statusCode}");
+        print("Password Update Response Body: ${response.body}");
+      }
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Parse response safely
+        try {
+          var resBody = json.decode(response.body);
+          if (kDebugMode) {
+            print("Password Reset Success: $resBody");
+          }
+
+          // Success message
+          if (!isClosed) {
+            Get.snackbar(
+              'Success',
+              'Password updated successfully!',
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.green,
+              colorText: Colors.white,
+              duration: const Duration(seconds: 2),
+              icon: const Icon(Icons.check_circle, color: Colors.white),
+            );
+          }
+
+          // Navigate to login screen
+          await Future.delayed(const Duration(milliseconds: 500));
+          
+          if (!isClosed) {
+            Get.offAll(
+              () => const LoginScreen(),
+              transition: Transition.noTransition,
+            );
+          }
+
+          return true;
+        } catch (e) {
+          if (kDebugMode) {
+            print("JSON parsing error: $e");
+          }
+          _showErrorSnackbar('Error', 'Invalid response from server');
+          return false;
+        }
+      } else {
+        // Handle error response
+        String errorMsg = "Failed to update password";
+        
+        try {
+          var errorBody = jsonDecode(response.body);
+          
+          if (errorBody is Map) {
+            // Try different error field names
+            if (errorBody['message'] != null) {
+              errorMsg = errorBody['message'].toString();
+            } else if (errorBody['error'] != null) {
+              errorMsg = errorBody['error'].toString();
+            } else if (errorBody['detail'] != null) {
+              errorMsg = errorBody['detail'].toString();
+            }
+            
+            // Check for nested errors
+            if (errorBody['errors'] != null) {
+              final errors = errorBody['errors'];
+              if (errors is Map) {
+                // Get first error message
+                if (errors.isNotEmpty) {
+                  final firstKey = errors.keys.first;
+                  final firstError = errors[firstKey];
+                  if (firstError is List && firstError.isNotEmpty) {
+                    errorMsg = firstError[0].toString();
+                  } else {
+                    errorMsg = firstError.toString();
+                  }
+                }
+              } else if (errors is String) {
+                errorMsg = errors;
+              }
+            }
+            
+            // Check for field-specific errors
+            if (errorBody['new_password'] != null) {
+              final pwdError = errorBody['new_password'];
+              if (pwdError is List && pwdError.isNotEmpty) {
+                errorMsg = pwdError[0].toString();
+              }
+            }
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            print("Error parsing error response: $e");
+          }
+        }
+        
+        _showErrorSnackbar('Error', errorMsg);
+        return false;
+      }
+    } on SocketException {
+      // No internet connection
+      _showErrorSnackbar(
+        'Connection Error',
+        'Please check your internet connection',
       );
-
-      // TODO: Navigate to login after API success
-      // await Future.delayed(const Duration(milliseconds: 500));
-      // Get.offAllNamed('/login'); // Or Get.offAll(() => LoginScreen())
-
-      return true;
-
+      return false;
+    } on TimeoutException {
+      // Request timeout
+      _showErrorSnackbar(
+        'Timeout',
+        'Request took too long. Please try again',
+      );
+      return false;
     } catch (e) {
       // Handle error
-      Get.snackbar(
+      if (kDebugMode) {
+        print("Password update error: $e");
+      }
+      
+      _showErrorSnackbar(
         'Error',
         'Failed to update password: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 3),
-        icon: const Icon(Icons.error, color: Colors.white),
       );
-
       return false;
-
     } finally {
       // Stop loading
-      isLoading.value = false;
+      if (!isClosed) {
+        isLoading.value = false;
+      }
     }
   }
 
@@ -287,5 +439,20 @@ class NewPasswordController extends GetxController {
         'met': hasNumber.value,
       },
     ];
+  }
+
+  // Helper method to show error snackbar
+  void _showErrorSnackbar(String title, String message) {
+    if (!isClosed) {
+      Get.snackbar(
+        title,
+        message,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+        icon: const Icon(Icons.error, color: Colors.white),
+      );
+    }
   }
 }

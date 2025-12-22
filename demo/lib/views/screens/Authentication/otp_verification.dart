@@ -1,5 +1,4 @@
 import 'package:demo/controllers/lilli_controllers/otp_verification_controller.dart';
-import 'package:demo/views/screens/Authentication/new_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -210,15 +209,8 @@ class OtpVerificationScreen extends StatelessWidget {
                 backgroundOpacity: 0.2,
                 onTap: controller.isButtonEnabled.value
                     ? () async {
-                        final success = await controller.verifyOtp();
-                        if (success) {
-                          Get.snackbar("Success", "OTP verification done", colorText: Colors.green);
-                          Get.to(
-                            () => const NewPasswordScreen(),
-                            transition: Transition.noTransition,
-                            duration: const Duration(seconds: 0),
-                          );
-                        }
+                        // Controller handles navigation internally
+                        await controller.verifyOtp();
                       }
                     : null,
                 width: screenWidth,
