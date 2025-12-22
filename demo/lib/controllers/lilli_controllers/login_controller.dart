@@ -128,7 +128,7 @@ class LoginController extends GetxController {
         // print("Login Response==========>>>>>>$resBody");
         var loiginRes = LoginResponseModel.fromJson(resBody);
         await SharedPrefsService.set("accessToken", loiginRes.accessToken);
-        await SharedPrefsService.set('refreshToken ', loiginRes.refreshToken);
+        await SharedPrefsService.set("refreshToken", loiginRes.refreshToken);
 
         Get.off(()=>HomeScreen());
       } else {

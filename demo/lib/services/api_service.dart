@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'dart:convert';
+import 'package:demo/controllers/lilli_controllers/log_out_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -34,7 +35,7 @@ class ApiService {
   Future<Map<String, String>> _getHeaders(bool authReq) async {
     Map<String, String> headers = {'Content-Type': 'application/json'};
     if (authReq) {
-      final token = await SharedPrefsService.get('token');
+      final token = await SharedPrefsService.get('accessToken');
       headers['Authorization'] = 'Bearer $token';
     }
     return headers;
@@ -195,7 +196,7 @@ class ApiService {
 
   void _checkTokenExpiry(bool authReq, http.Response response) {
     if (response.statusCode == 401 && authReq) {
-      Get.find<AuthController>().logout();
+      Get.find<LogoutController>().logout();
       customSnackbar("Error Occured", "Sign in expired");
     }
   }

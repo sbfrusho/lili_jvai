@@ -22,7 +22,7 @@ class ChangePasswordScreen extends StatelessWidget {
           children: [
             /// OLD PASSWORD
             CustomTextField(
-              controller: controller.oldPasswordController,
+              controller: controller.currentPasswordController,
               label: "Enter your old password",
               prefixSvg: "assets/icons/lock.svg",
               isPassword: true,

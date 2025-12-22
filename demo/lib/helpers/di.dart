@@ -1,4 +1,5 @@
 
+import 'package:demo/controllers/lilli_controllers/log_out_controller.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/lilli_controllers/auth_controller.dart';
@@ -13,7 +14,7 @@ class InitialBindings extends Bindings {
     
     // Permanent controllers (stay in memory)
     Get.lazyPut(() => ThemeController(sharedPreferences: Get.find()));
-    Get.put(AuthController());
+    Get.put(LogoutController());
     Get.put(UserController());
   }
 }
